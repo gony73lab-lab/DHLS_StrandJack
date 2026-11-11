@@ -1,0 +1,115 @@
+<!--
+═════════════════════════════════════════════════════════════════
+    ModelManageView — Model file list with load/delete/add
+═════════════════════════════════════════════════════════════════
+-->
+<UserControl
+    x:Class="DHLS_StrandJack.ModelManageView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:DHLS_StrandJack"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    RequestedTheme="Light"
+    Background="Transparent">
+
+    <Viewbox Stretch="Uniform" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                BorderThickness="1" CornerRadius="12"
+                Padding="12" Width="480" Height="420"
+                HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <Grid RowSpacing="16">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
+                    <TextBlock Loaded="OnLocalizedLoaded" Text="모델 관리" Style="{StaticResource PageTitle}"/>
+                    <Button Loaded="OnLocalizedLoaded" HorizontalAlignment="Right" Click="BackButton_Click" ToolTipService.ToolTip="닫기" AutomationProperties.Name="모델 관리 닫기">
+                        <SymbolIcon Symbol="Cancel"/>
+                    </Button>
+                </Grid>
+
+                <Border Grid.Row="1" Background="{ThemeResource LayerFillColorDefaultBrush}"
+                        BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                        BorderThickness="1" CornerRadius="8" Padding="0">
+                    <ListView ItemsSource="{x:Bind ModelFiles, Mode=OneWay}"
+                              SelectedIndex="{x:Bind SelectedModelIndex, Mode=TwoWay}"
+                              MinHeight="280"
+                              SelectionMode="Single">
+                        <ListView.Resources>
+                            <!-- 1. 마우스를 올렸을 때 (Hover) 배경색 -->
+                            <SolidColorBrush x:Key="ListViewItemBackgroundPointerOver" Color="#FFD6E4FF"/>
+
+                            <!-- 2. 클릭했을 때 (Pressed) 배경색 -->
+                            <SolidColorBrush x:Key="ListViewItemBackgroundPressed" Color="#FF85B5FF"/>
+
+                            <!-- 3. 선택된 상태 (Selected) 배경색 -->
+                            <SolidColorBrush x:Key="ListViewItemBackgroundSelected" Color="#0066FF"/>
+
+                            <!-- 4. 선택된 상태에서 마우스를 올렸을 때 배경색 -->
+                            <SolidColorBrush x:Key="ListViewItemBackgroundSelectedPointerOver" Color="#267DFF"/>
+
+                            <!-- 5. 선택된 상태에서 클릭했을 때 배경색 -->
+                            <SolidColorBrush x:Key="ListViewItemBackgroundSelectedPressed" Color="#0046B3"/>
+
+                            <!-- (옵션) 글자 색상도 변경하고 싶다면 아래 키를 사용하세요 -->
+                            <SolidColorBrush x:Key="ListViewItemForegroundSelected" Color="White"/>
+                            <SolidColorBrush x:Key="ListViewItemForegroundSelectedPointerOver" Color="White"/>
+                        </ListView.Resources>
+                        <ListView.ItemTemplate>
+                            <DataTemplate x:DataType="x:String">
+                                <Grid Padding="4,6">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="{x:Bind}" FontSize="14" VerticalAlignment="Center"/>
+                                    <FontIcon Grid.Column="1" Glyph="&#xE7C3;" FontSize="14" Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </Border>
+
+                <Grid Grid.Row="2" ColumnSpacing="6">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Button Loaded="OnLocalizedLoaded" Grid.Column="0" Style="{StaticResource AccentButtonStyle}"
+                            Command="{x:Bind LoadModelCommand}">
+                        <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                            <Viewbox Width="16" Height="16" VerticalAlignment="Center">
+                                <SymbolIcon Symbol="OpenFile"/>
+                            </Viewbox>
+                            <TextBlock Loaded="OnLocalizedLoaded" Text="모델 로드" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Loaded="OnLocalizedLoaded" Grid.Column="1"
+                            Command="{x:Bind DeleteModelCommand}">
+                        <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                            <Viewbox Width="16" Height="16" VerticalAlignment="Center">
+                                <SymbolIcon Symbol="Delete"/>
+                            </Viewbox>
+                            <TextBlock Loaded="OnLocalizedLoaded" Text="모델 삭제" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Loaded="OnLocalizedLoaded" Grid.Column="2"
+                            Command="{x:Bind AddNewModelCommand}">
+                        <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                            <Viewbox Width="16" Height="16" VerticalAlignment="Center">
+                                <SymbolIcon Symbol="Add"/>
+                            </Viewbox>
+                            <TextBlock Loaded="OnLocalizedLoaded" Text="새 모델 추가" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                </Grid>
+            </Grid>
+        </Border>
+    </Viewbox>
+</UserControl>

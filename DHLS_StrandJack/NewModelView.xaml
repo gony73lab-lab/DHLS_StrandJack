@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<UserControl
+    x:Class="DHLS_StrandJack.NewModelView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:DHLS_StrandJack"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    RequestedTheme="Light"
+    Background="DimGray">
+
+    <UserControl.Resources>
+        <SolidColorBrush x:Key="DangerButtonBrush" Color="Firebrick"/>
+    </UserControl.Resources>
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <StackPanel Padding="24,24,24,24" Spacing="16" MaxWidth="400"
+                    HorizontalAlignment="Center" VerticalAlignment="Center">
+            <TextBlock Loaded="OnLocalizedLoaded" Text="신규 모델 생성" FontSize="24" FontWeight="SemiBold"/>
+
+            <StackPanel Spacing="8">
+                <TextBlock Loaded="OnLocalizedLoaded" Text="생성할 모델명을 입력하세요" FontSize="14" Foreground="#64748b"/>
+                <!-- ViewModel. 없이 바로 바인딩 -->
+                <TextBox Loaded="OnLocalizedLoaded" Text="{x:Bind ModelName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         PlaceholderText="예: ProjectName_SLS8H-1000"/>
+            </StackPanel>
+
+            <!-- 모델 생성 + 취소(나가기 스타일) 버튼 -->
+            <StackPanel Orientation="Horizontal" Spacing="8" HorizontalAlignment="Center">
+                <Button Style="{StaticResource AccentButtonStyle}"
+                        Padding="14,6"
+                        Click="{x:Bind ConfirmCreate}">
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <FontIcon Glyph="&#xE74E;"/>
+                        <TextBlock Loaded="OnLocalizedLoaded" Text="모델 생성"/>
+                    </StackPanel>
+                </Button>
+                <Button Background="{StaticResource DangerButtonBrush}"
+                        Foreground="White"
+                        BorderBrush="{StaticResource DangerButtonBrush}"
+                        Padding="14,6"
+                        Click="{x:Bind CancelCreate}">
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <FontIcon Glyph="&#xE711;"/>
+                        <TextBlock Loaded="OnLocalizedLoaded" Text="취소"/>
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</UserControl>

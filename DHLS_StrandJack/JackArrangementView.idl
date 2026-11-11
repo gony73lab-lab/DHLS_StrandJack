@@ -1,0 +1,43 @@
+﻿namespace DHLS_StrandJack
+{
+    enum JackColor
+    {
+        Red      = 0,
+        Green    = 1,
+        Yellow   = 2,
+        Cyan     = 3,
+        Inactive = 4,
+    };
+
+    [default_interface]
+    runtimeclass JackCellData : Microsoft.UI.Xaml.Data.INotifyPropertyChanged
+    {
+        JackCellData();
+
+        String   Id     { get; set; };
+        Boolean  Active { get; set; };
+        JackColor Color  { get; set; };
+        String   Label  { get; set; };
+    };
+
+    [default_interface]
+    runtimeclass JackArrangementView : Microsoft.UI.Xaml.Controls.UserControl,
+        Microsoft.UI.Xaml.Data.INotifyPropertyChanged
+    {
+        JackArrangementView();
+
+        Int32 ActiveTemplate { get; set; };
+
+        void SelectTemplate(Int32 templateId);
+        void SelectTemplate1();
+        void SelectTemplate2();
+        void SelectTemplate3();
+        void SelectTemplate4();
+        void SelectStackedTwoLine();
+        void Confirm();
+        void Cancel();
+        void Close();
+
+        event Microsoft.UI.Xaml.Data.PropertyChangedEventHandler PropertyChanged;
+    }
+}

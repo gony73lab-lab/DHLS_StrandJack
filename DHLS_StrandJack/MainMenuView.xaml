@@ -1,0 +1,1225 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<UserControl
+    x:Class="DHLS_StrandJack.MainMenuView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:DHLS_StrandJack"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Loaded="ConnectionView_Loaded"
+    Unloaded="ConnectionView_Unloaded"
+    RequestedTheme="Light"
+    Background="#f1f5f9"
+    FontFamily="Malgun Gothic">
+
+    <UserControl.Resources>
+        <!-- 버튼 테두리와 레이블을 분리한 템플릿 -->
+        <!-- 일반 메뉴 버튼 -->
+        <Style x:Key="MenuButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#868e96"/>
+            <Setter Property="BorderThickness" Value="4"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <!-- 버튼 비율 유지 (텍스트와 아이콘 간격) -->
+                        <StackPanel Spacing="10" Background="Transparent" HorizontalAlignment="Center">
+                            <Border x:Name="IconBorder" 
+                                    Background="{TemplateBinding Background}" 
+                                    BorderBrush="{TemplateBinding BorderBrush}" 
+                                    BorderThickness="{TemplateBinding BorderThickness}" 
+                                    CornerRadius="26" Width="150" Height="150">
+                                <Border.RenderTransform>
+                                    <ScaleTransform x:Name="scaleTransform" ScaleX="1" ScaleY="1" CenterX="75" CenterY="75"/>
+                                </Border.RenderTransform>
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <TextBlock Text="{TemplateBinding Tag}" FontWeight="Black" FontSize="18" Foreground="#1f2937" HorizontalAlignment="Center"/>
+
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal" />
+                                    <VisualState x:Name="PointerOver"/>
+                                    <VisualState x:Name="Pressed">
+                                        <Storyboard>
+                                            <DoubleAnimation
+                                                Storyboard.TargetName="scaleTransform"
+                                                Storyboard.TargetProperty="ScaleX"
+                                                To="0.96"
+                                                Duration="0:0:0.05"/>
+                                            <DoubleAnimation
+                                                Storyboard.TargetName="scaleTransform"
+                                                Storyboard.TargetProperty="ScaleY"
+                                                To="0.96"
+                                                Duration="0:0:0.05"/>
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                        </StackPanel>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- EXIT 버튼 전용 스타일: 색상 상태는 C++에서 제어 -->
+        <Style x:Key="ExitButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter
+                        HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                        VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
+    <!-- 전체 화면을 헤더, 가변 중앙(Viewbox), 푸터의 3단으로 분리 -->
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="70"/>
+            <!-- 고정 헤더 영역 -->
+            <RowDefinition Height="*"/>
+            <!-- 가변 스케일링 중앙 영역 -->
+            <RowDefinition Height="100"/>
+            <!-- 고정 하단 푸터 영역 -->
+        </Grid.RowDefinitions>
+
+        <!--
+            MainMenuView 배경 전용 더블클릭 영역.
+            다른 Button/Control의 이벤트와 충돌하지 않도록
+            모든 실제 UI보다 뒤에 배치한다.
+        -->
+        <Border
+            x:Name="MainBackgroundHitArea"
+            Grid.RowSpan="3"
+            Background="Transparent"
+            DoubleTapped="MainMenuView_Background_DoubleTapped"/>
+
+        <!-- [Row 0: Header] -->
+        <Grid Grid.Row="0" Background="Red">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0" Click="OnLanguageClick" Width="110" Height="40" HorizontalAlignment="Left" Margin="40,0,20,0" 
+                    Background="White" Foreground="#1f2937" BorderBrush="#9ca3af" BorderThickness="2" 
+                    CornerRadius="20" Padding="0">
+                <StackPanel Orientation="Horizontal" Spacing="6" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock Text="文A" FontSize="14" FontWeight="Bold"/>
+                    <TextBlock Loaded="OnLocalizedLoaded" Text="ENG" FontWeight="Black" FontSize="14"/>
+                </StackPanel>
+            </Button>
+
+            <Viewbox Grid.Column="1" Stretch="Uniform" StretchDirection="DownOnly" Margin="16,0">
+            <StackPanel HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Orientation="Horizontal"
+            Spacing="16">
+
+                <TextBlock x:Name="CurrentModelNameText" Visibility="Collapsed"
+                           Foreground="White" FontSize="36" FontWeight="Bold"
+                           MaxWidth="240" TextTrimming="CharacterEllipsis"
+                           VerticalAlignment="Center"/>
+
+                <TextBlock Loaded="OnLocalizedLoaded" Text="STRAND JACK CONTROL"
+               Foreground="White"
+               FontSize="36"
+               FontWeight="Bold"/>
+
+                <!-- 배포 버전 자동 표시 -->
+                <TextBlock Loaded="VersionText_Loaded"
+               Foreground="#d1d5db"
+               FontSize="14"
+               FontWeight="SemiBold"
+               VerticalAlignment="Bottom"
+               Margin="0,0,0,6"/>
+
+            </StackPanel>
+            </Viewbox>
+
+            <!-- DHLS LOGO -->
+            <Button x:Name="HeaderLogoButton" Grid.Column="2" Click="HeaderLogoButton_Click"
+                    Loaded="OnLocalizedLoaded" ToolTipService.ToolTip="최소화" AutomationProperties.Name="최소화"
+                    HorizontalAlignment="Right" VerticalAlignment="Center" Margin="20,0,6,0"
+                    Padding="0" Background="Transparent" BorderThickness="0">
+                <Image Source="ms-appx:///Assets/DHLS_Logo_White_Transparent.png" Width="180" Stretch="Uniform"/>
+            </Button>
+        </Grid>
+
+        <!-- [Row 1: Main Content] 자동 스케일링 컨테이너 Viewbox 도입 -->
+        <Viewbox Grid.Row="1" Stretch="Uniform" StretchDirection="DownOnly" Margin="24,36,24,24">
+            <!-- 상단 3개, 하단 4개 메뉴를 중앙 정렬 -->
+            <Grid Width="880" RowSpacing="28">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Menu order and pictograms follow the observed DSJ reference. -->
+                <Button Loaded="OnLocalizedLoaded" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource MenuButtonStyle}" Tag="상승 운전" Click="StrandPreview_Click"><Viewbox Width="106" Height="106"><Canvas Width="100" Height="100"><Rectangle Canvas.Left="17" Canvas.Top="13" Width="24" Height="74" Stroke="Black" StrokeThickness="3"/><Path Data="M 20,23 L 30,23 M 20,33 L 27,33 M 20,43 L 30,43 M 20,53 L 27,53 M 20,63 L 30,63 M 20,73 L 27,73" Stroke="Black" StrokeThickness="2"/><Path Canvas.Left="54" Canvas.Top="16" Width="36" Height="68" Stretch="Fill" Data="M32,3 C34,3 36,4 38,7 L60,34 C64,39 61,45 55,45 L47,45 L47,58 C47,62 44,64 40,64 L24,64 C20,64 17,62 17,58 L17,45 L9,45 C3,45 0,39 4,34 L26,7 C28,4 30,3 32,3 Z" Fill="Black"/></Canvas></Viewbox></Button>
+                <Button Loaded="OnLocalizedLoaded" Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="2" Style="{StaticResource MenuButtonStyle}" Tag="하강 운전" Click="StrandPreview_Click"><Viewbox Width="106" Height="106"><Canvas Width="100" Height="100"><Rectangle Canvas.Left="17" Canvas.Top="13" Width="24" Height="74" Stroke="Black" StrokeThickness="3"/><Path Data="M 20,23 L 30,23 M 20,33 L 27,33 M 20,43 L 30,43 M 20,53 L 27,53 M 20,63 L 30,63 M 20,73 L 27,73" Stroke="Black" StrokeThickness="2"/><Path Canvas.Left="54" Canvas.Top="16" Width="36" Height="68" Stretch="Fill" RenderTransformOrigin="0.5,0.5" Data="M32,3 C34,3 36,4 38,7 L60,34 C64,39 61,45 55,45 L47,45 L47,58 C47,62 44,64 40,64 L24,64 C20,64 17,62 17,58 L17,45 L9,45 C3,45 0,39 4,34 L26,7 C28,4 30,3 32,3 Z" Fill="Black"><Path.RenderTransform><RotateTransform Angle="180"/></Path.RenderTransform></Path></Canvas></Viewbox></Button>
+                <Button Loaded="OnLocalizedLoaded" Grid.Row="0" Grid.Column="4" Grid.ColumnSpan="2" Style="{StaticResource MenuButtonStyle}" Tag="수동 운전" Click="StrandPreview_Click"><Viewbox Width="106" Height="106"><Canvas Width="100" Height="100"><Path Data="M 29,14 C 15,12 13,24 20,32 L 28,40 L 28,82 C 28,91 39,91 39,82 L 39,40 L 47,32 C 55,24 51,12 40,14 L 40,25 L 34,29 L 29,25 Z" Stroke="Black" StrokeThickness="3" Fill="Transparent"/><Path Data="M 66,14 L 82,14 L 80,37 L 76,42 L 76,82 C 76,90 66,90 66,82 L 66,42 L 62,37 Z" Stroke="Black" StrokeThickness="3" Fill="Transparent"/><Path Data="M 62,29 L 82,29" Stroke="Black" StrokeThickness="3"/></Canvas></Viewbox></Button>
+                <Button Loaded="OnLocalizedLoaded" Grid.Row="0" Grid.Column="6" Grid.ColumnSpan="2" Style="{StaticResource MenuButtonStyle}" Tag="텐셔닝 작업" Click="StrandPreview_Click"><Viewbox Width="106" Height="106"><Canvas Width="100" Height="100"><Rectangle Canvas.Left="17" Canvas.Top="13" Width="24" Height="74" Stroke="Black" StrokeThickness="3"/><Path Data="M 20,23 L 30,23 M 20,33 L 27,33 M 20,43 L 30,43 M 20,53 L 27,53 M 20,63 L 30,63 M 20,73 L 27,73" Stroke="Black" StrokeThickness="2"/><Path Canvas.Left="58" Canvas.Top="12" Width="28" Height="35" Stretch="Fill" Data="M32,3 C34,3 36,4 38,7 L60,34 C64,39 61,45 55,45 L47,45 L47,58 C47,62 44,64 40,64 L24,64 C20,64 17,62 17,58 L17,45 L9,45 C3,45 0,39 4,34 L26,7 C28,4 30,3 32,3 Z" Fill="Black"/><Path Canvas.Left="58" Canvas.Top="53" Width="28" Height="35" Stretch="Fill" RenderTransformOrigin="0.5,0.5" Data="M32,3 C34,3 36,4 38,7 L60,34 C64,39 61,45 55,45 L47,45 L47,58 C47,62 44,64 40,64 L24,64 C20,64 17,62 17,58 L17,45 L9,45 C3,45 0,39 4,34 L26,7 C28,4 30,3 32,3 Z" Fill="Black"><Path.RenderTransform><RotateTransform Angle="180"/></Path.RenderTransform></Path></Canvas></Viewbox></Button>
+                <!-- 1. STROKE CONTROL -->
+                <Button Loaded="OnLocalizedLoaded" x:Name="BtnStroke" Visibility="Collapsed"
+        Grid.Row="0"
+        Grid.Column="1" Grid.ColumnSpan="2"
+        Style="{StaticResource MenuButtonStyle}"
+        Tag="STROKE CONTROL"
+        HorizontalContentAlignment="Center"
+        VerticalContentAlignment="Center"
+        PointerEntered="MenuButton_PointerEntered"
+        PointerExited="MenuButton_PointerExited"
+        Click="MenuButton_Click">
+
+                    <Viewbox Width="90"
+             Height="90"
+             Stretch="Uniform">
+
+                        <!-- 첨부 원본 이미지 비율 : 122 x 234 -->
+                        <Grid Width="122"
+              Height="234">
+
+                            <!-- =====================================================
+                 1. 눈금자 외곽 프레임
+                 
+                 원본 기준:
+                 Left   ≒ 24
+                 Right  ≒ 103
+                 Top    ≒ 21
+                 Bottom ≒ 227
+                 
+                 모서리는 살짝 둥글게
+                 ===================================================== -->
+                            <Path
+                Data="
+                    M 24,21
+                    L 103,21
+                    L 103,227
+                    L 24,227
+                    Z"
+                Stroke="{x:Bind BtnStroke.Foreground, Mode=OneWay}"
+                StrokeThickness="9"
+                StrokeLineJoin="Round"
+                StrokeStartLineCap="Round"
+                StrokeEndLineCap="Round"
+                Fill="Transparent"/>
+
+
+                            <!-- =====================================================
+                 2. 내부 세로 분할선
+                 
+                 첨부 이미지에서 오른쪽 약 1/4 영역을
+                 분리하는 수직선
+                 ===================================================== -->
+                            <Path
+                Data="M 81,21 L 81,227"
+                Stroke="{x:Bind BtnStroke.Foreground, Mode=OneWay}"
+                StrokeThickness="9"
+                StrokeStartLineCap="Square"
+                StrokeEndLineCap="Square"/>
+
+
+                            <!-- =====================================================
+                 3. 눈금 Tick Marks
+                 
+                 원본 실제 배치:
+                 Y = 43 / 70 / 97 / 124 / 151 / 178 / 205
+
+                 짧은 눈금 : 약 X=24 → 41
+                 긴 눈금   : 약 X=24 → 56
+                 ===================================================== -->
+
+                            <!-- 1 : 짧은 눈금 -->
+                            <Path
+                Data="M 24,43 L 41,43"
+                Stroke="{x:Bind BtnStroke.Foreground, Mode=OneWay}"
+                StrokeThickness="9"
+                StrokeStartLineCap="Round"
+                StrokeEndLineCap="Round"/>
+
+                            <!-- 2 : 긴 눈금 -->
+                            <Path
+                Data="M 24,70 L 56,70"
+                Stroke="{x:Bind BtnStroke.Foreground, Mode=OneWay}"
+                StrokeThickness="9"
+                StrokeStartLineCap="Round"
+                StrokeEndLineCap="Round"/>
+
+                            <!-- 3 : 짧은 눈금 -->
+                            <Path
+                Data="M 24,97 L 41,97"
+                Stroke="{x:Bind BtnStroke.Foreground, Mode=OneWay}"
+                StrokeThickness="9"
+                StrokeStartLineCap="Round"
+                StrokeEndLineCap="Round"/>
+
+                            <!-- 4 : 긴 눈금 -->
+                            <Path
+                Data="M 24,124 L 56,124"
+                Stroke="{x:Bind BtnStroke.Foreground, Mode=OneWay}"
+                StrokeThickness="9"
+                StrokeStartLineCap="Round"
+                StrokeEndLineCap="Round"/>
+
+                            <!-- 5 : 짧은 눈금 -->
+                            <Path
+                Data="M 24,151 L 41,151"
+                Stroke="{x:Bind BtnStroke.Foreground, Mode=OneWay}"
+                StrokeThickness="9"
+                StrokeStartLineCap="Round"
+                StrokeEndLineCap="Round"/>
+
+                            <!-- 6 : 긴 눈금 -->
+                            <Path
+                Data="M 24,178 L 56,178"
+                Stroke="{x:Bind BtnStroke.Foreground, Mode=OneWay}"
+                StrokeThickness="9"
+                StrokeStartLineCap="Round"
+                StrokeEndLineCap="Round"/>
+
+                            <!-- 7 : 짧은 눈금 -->
+                            <Path
+                Data="M 24,205 L 41,205"
+                Stroke="{x:Bind BtnStroke.Foreground, Mode=OneWay}"
+                StrokeThickness="9"
+                StrokeStartLineCap="Round"
+                StrokeEndLineCap="Round"/>
+
+                        </Grid>
+                    </Viewbox>
+
+                </Button>
+
+                <!-- 2. ANGLE CONTROL -->
+                <Button Loaded="OnLocalizedLoaded" x:Name="BtnAngle" Visibility="Collapsed"
+        Grid.Row="0"
+        Grid.Column="3" Grid.ColumnSpan="2"
+        Style="{StaticResource MenuButtonStyle}"
+        Tag="ANGLE CONTROL"
+        HorizontalContentAlignment="Center"
+        VerticalContentAlignment="Center"
+        PointerEntered="MenuButton_PointerEntered"
+        PointerExited="MenuButton_PointerExited"
+        Click="MenuButton_Click">
+
+                    <!-- 원본 이미지 비율에 가깝게 유지 -->
+                    <Viewbox Width="90"
+             Height="90"
+             Stretch="Uniform">
+
+                        <!-- 첨부 이미지 비율 기준 -->
+                        <Grid Width="248"
+              Height="178">
+
+                            <!-- =====================================================
+                 1. 메인 각도 외곽선
+                 - 좌측 꼭짓점에서 시작
+                 - 우상향 사선
+                 - 우측으로 길게 뻗는 기준선
+                 ===================================================== -->
+                            <Path
+                Data="
+                    M 12,162 L 140,34
+                    M 12,162 L 236,162"
+                Stroke="{x:Bind BtnAngle.Foreground, Mode=OneWay}"
+                StrokeThickness="10"
+                StrokeStartLineCap="Round"
+                StrokeEndLineCap="Round"
+                StrokeLineJoin="Round"
+                Fill="Transparent"/>
+
+                            <!-- =====================================================
+                 2. 각도 표시 아크
+                 - 좌측 꼭짓점을 중심으로 한 아크 형태
+                 - 시작점은 사선 위
+                 - 끝점은 기준선 위
+                 ===================================================== -->
+                            <Path
+                Data="
+                    M 77,97
+                    A 92,92 0 0 1 105,162"
+                Stroke="{x:Bind BtnAngle.Foreground, Mode=OneWay}"
+                StrokeThickness="10"
+                StrokeStartLineCap="Round"
+                StrokeEndLineCap="Round"
+                StrokeLineJoin="Round"
+                Fill="Transparent"/>
+
+                        </Grid>
+                    </Viewbox>
+                </Button>
+
+                <!-- 3. WEIGHING CONTROL -->
+                <Button Loaded="OnLocalizedLoaded" x:Name="BtnWeighing" Visibility="Collapsed"
+        Grid.Row="0"
+        Grid.Column="5" Grid.ColumnSpan="2"
+        Style="{StaticResource MenuButtonStyle}"
+        Tag="WEIGHING CONTROL"
+        HorizontalContentAlignment="Center"
+        VerticalContentAlignment="Center"
+        PointerEntered="MenuButton_PointerEntered"
+        PointerExited="MenuButton_PointerExited"
+        Click="MenuButton_Click">
+
+                    <!--
+        첨부 이미지 비율을 유지하기 위해
+        정사각형이 아니라 세로가 약간 긴 ViewBox 사용
+    -->
+                    <Viewbox Width="90"
+             Height="98"
+             Stretch="Uniform">
+
+                        <Grid Width="100"
+              Height="108">
+
+                            <!-- =====================================================
+                 1. 상단 계량 받침대
+                 원본 이미지의 두꺼운 둥근 Tray 형태
+                 ===================================================== -->
+                            <Path
+                Data="
+                    M 10,6
+                    L 90,6
+                    C 92,6 93,7 93,9
+                    L 93,11
+                    C 93,16 89,19 84,19
+                    L 16,19
+                    C 11,19 7,16 7,11
+                    L 7,9
+                    C 7,7 8,6 10,6
+                    Z"
+                Stroke="{x:Bind BtnWeighing.Foreground, Mode=OneWay}"
+                StrokeThickness="4.5"
+                StrokeLineJoin="Round"/>
+
+
+                            <!-- =====================================================
+                 2. 상단 받침대 연결 기둥
+                 첨부 이미지처럼 두 개의 수직 지지부
+                 ===================================================== -->
+                            <Path
+                Data="
+                    M 44,19 L 44,27
+                    M 56,19 L 56,27"
+                Stroke="{x:Bind BtnWeighing.Foreground, Mode=OneWay}"
+                StrokeThickness="4.5"
+                StrokeStartLineCap="Square"
+                StrokeEndLineCap="Square"/>
+
+
+                            <!-- =====================================================
+                 3. 저울 전체 Body
+                 상단은 원형으로 올라가고
+                 하단은 직선 + 둥근 모서리
+                 ===================================================== -->
+                            <Path
+                Data="
+                    M 18,59
+
+                    C 18,41
+                      32,27
+                      50,27
+
+                    C 68,27
+                      82,41
+                      82,59
+
+                    L 82,91
+
+                    C 82,100
+                      76,105
+                      68,105
+
+                    L 32,105
+
+                    C 24,105
+                      18,100
+                      18,91
+
+                    Z"
+                Stroke="{x:Bind BtnWeighing.Foreground, Mode=OneWay}"
+                StrokeThickness="4.5"
+                StrokeLineJoin="Round"/>
+
+
+                            <!-- =====================================================
+                 4. 내부 계기판 원
+                 첨부 그림보다 너무 작아 보이지 않도록 확대
+                 ===================================================== -->
+                            <Path
+                Data="
+                    M 50,33
+
+                    A 26,26
+                      0 1 1
+                      50,85
+
+                    A 26,26
+                      0 1 1
+                      50,33"
+                Stroke="{x:Bind BtnWeighing.Foreground, Mode=OneWay}"
+                StrokeThickness="4.5"
+                StrokeLineJoin="Round"/>
+
+
+                            <!-- =====================================================
+                 5. 계기판 ↔ Body 연결 Tick
+                 원본 이미지의 상/하/좌/우 4방향 구조
+                 ===================================================== -->
+                            <Path
+                Data="
+                    M 50,27 L 50,33
+                    M 18,59 L 24,59
+                    M 76,59 L 82,59
+                    M 50,85 L 50,92"
+                Stroke="{x:Bind BtnWeighing.Foreground, Mode=OneWay}"
+                StrokeThickness="4.5"
+                StrokeStartLineCap="Square"
+                StrokeEndLineCap="Square"/>
+
+
+                            <!-- =====================================================
+                 6. 하단 베이스 분할선
+                 ===================================================== -->
+                            <Path
+                Data="M 18,93 L 82,93"
+                Stroke="{x:Bind BtnWeighing.Foreground, Mode=OneWay}"
+                StrokeThickness="4.5"
+                StrokeStartLineCap="Square"
+                StrokeEndLineCap="Square"/>
+
+
+                            <!-- =====================================================
+                 7. 중앙 Pivot
+                 첨부 이미지처럼 두꺼운 원형
+                 ===================================================== -->
+                            <Path
+                Data="
+                    M 58,59
+
+                    A 8,8
+                      0 1 1
+                      42,59
+
+                    A 8,8
+                      0 1 1
+                      58,59"
+                Stroke="{x:Bind BtnWeighing.Foreground, Mode=OneWay}"
+                StrokeThickness="4.5"
+                StrokeLineJoin="Round"/>
+
+
+                            <!-- =====================================================
+                 8. 계량 바늘
+                 중앙 Pivot에서 약 2시 방향
+                 ===================================================== -->
+                            <Path
+                Data="M 55.5,53.5 L 65.5,43.5"
+                Stroke="{x:Bind BtnWeighing.Foreground, Mode=OneWay}"
+                StrokeThickness="4.5"
+                StrokeStartLineCap="Round"
+                StrokeEndLineCap="Round"/>
+
+                        </Grid>
+                    </Viewbox>
+
+                </Button>
+
+                <!-- 4. CALIBRATION -->
+                <Button Loaded="OnLocalizedLoaded" x:Name="BtnCalib"
+        Grid.Row="1"
+        Grid.Column="0" Grid.ColumnSpan="2"
+        Style="{StaticResource MenuButtonStyle}"
+        Tag="Calibration"
+        HorizontalContentAlignment="Center"
+        VerticalContentAlignment="Center"
+        PointerEntered="MenuButton_PointerEntered"
+        PointerExited="MenuButton_PointerExited"
+        Click="StrandPreview_Click">
+
+                    <!--
+        원본 이미지 비율 : 124 x 240
+        정사각형 좌표계로 찌그러뜨리지 않고 원본 종횡비 유지
+    -->
+                    <Viewbox Width="90"
+             Height="90"
+             Stretch="Uniform">
+
+                        <Grid Width="124"
+              Height="240">
+
+                            <Path Data="M 0,91 L 30,38 L 60,91 Z" Fill="#F5272E" Stroke="Black" StrokeThickness="5"/>
+                            <Path Data="M 30,57 L 30,73 M 30,80 L 30,82" Stroke="Black" StrokeThickness="5" StrokeStartLineCap="Round"/>
+
+                            <!-- =====================================================
+                 1. 긴 중앙 샤프트 / 손잡이
+                 하단 끝은 원본처럼 U자형으로 둥글게 마감
+                 ===================================================== -->
+                            <Path
+                Data="
+                    M 61,96
+                    L 61,222
+                    C 61,230
+                      66,234
+                      73,234
+                    C 80,234
+                      84,230
+                      84,222
+                    L 84,98"
+                Stroke="{x:Bind BtnCalib.Foreground, Mode=OneWay}"
+                StrokeThickness="9"
+                StrokeLineJoin="Round"
+                StrokeStartLineCap="Round"
+                StrokeEndLineCap="Round"/>
+
+
+                            <!-- =====================================================
+                 2. 상단 Jaw
+                 
+                 원본 특징:
+                 - 좌측은 짧은 수직면
+                 - 좌측 위에서 우측 위로 완만한 곡선
+                 - 우측은 거의 수직
+                 - 하단은 완전한 수평선
+                 ===================================================== -->
+                            <Path
+                Data="
+                    M 20,47
+                    L 20,38
+
+                    C 34,25
+                      54,17
+                      80,14
+
+                    C 91,14
+                      102,15
+                      110,18
+
+                    L 110,47
+                    Z"
+                Stroke="{x:Bind BtnCalib.Foreground, Mode=OneWay}"
+                StrokeThickness="9"
+                StrokeLineJoin="Round"
+                StrokeStartLineCap="Round"
+                StrokeEndLineCap="Round"/>
+
+
+                            <!-- =====================================================
+                 3. 상단 Jaw 내부의 첫 번째 수직 샤프트
+                 ===================================================== -->
+                            <Path
+                Data="M 61,20 L 61,47"
+                Stroke="{x:Bind BtnCalib.Foreground, Mode=OneWay}"
+                StrokeThickness="9"
+                StrokeStartLineCap="Square"
+                StrokeEndLineCap="Square"/>
+
+
+                            <!-- =====================================================
+                 4. 상단 Jaw 내부의 두 번째 수직 샤프트
+                 ===================================================== -->
+                            <Path
+                Data="M 84,16 L 84,47"
+                Stroke="{x:Bind BtnCalib.Foreground, Mode=OneWay}"
+                StrokeThickness="9"
+                StrokeStartLineCap="Square"
+                StrokeEndLineCap="Square"/>
+
+
+                            <!-- =====================================================
+                 5. 상/하 Jaw 사이 Gap에서 보이는 샤프트
+                 원본의 두 개 수직선 재현
+                 ===================================================== -->
+                            <Path
+                Data="
+                    M 61,48 L 61,68
+                    M 84,48 L 84,68"
+                Stroke="{x:Bind BtnCalib.Foreground, Mode=OneWay}"
+                StrokeThickness="9"
+                StrokeStartLineCap="Square"
+                StrokeEndLineCap="Square"/>
+
+
+                            <!-- =====================================================
+                 6. 하단 Jaw
+
+                 단순 상단 Jaw 대칭이 아님.
+                 
+                 원본처럼:
+                 - 위쪽은 긴 수평선
+                 - 우측은 수직
+                 - 아래쪽은 좌측으로 갈수록 올라가는 곡선
+                 - 왼쪽 끝은 좁아짐
+                 ===================================================== -->
+                            <Path
+                Data="
+                    M 19,69
+                    L 110,69
+
+                    L 110,98
+
+                    C 97,101
+                      83,103
+                      69,101
+
+                    C 49,99
+                      31,91
+                      19,80
+
+                    Z"
+                Stroke="{x:Bind BtnCalib.Foreground, Mode=OneWay}"
+                StrokeThickness="9"
+                StrokeLineJoin="Round"
+                StrokeStartLineCap="Round"
+                StrokeEndLineCap="Round"/>
+
+                        </Grid>
+                    </Viewbox>
+
+                </Button>
+
+                <!-- 5. CONTROL SETTING -->
+                <Button x:Name="BtnGeneral"
+        Grid.Row="1"
+        Grid.Column="2" Grid.ColumnSpan="2"
+        Style="{StaticResource MenuButtonStyle}"
+        Tag="일반 셋팅"
+        HorizontalContentAlignment="Center"
+        VerticalContentAlignment="Center"
+        PointerEntered="MenuButton_PointerEntered"
+        PointerExited="MenuButton_PointerExited"
+        Click="ProtectedSetting_Click">
+
+                    <Viewbox Width="90"
+             Height="90"
+             Stretch="Uniform">
+
+                        <!-- 첨부 이미지의 정사각형 비율 유지 -->
+                        <Grid Width="240"
+              Height="240">
+
+                            <!-- =====================================================
+                 1. 전체 외곽 프레임
+                 첨부 이미지처럼 굵고 둥근 사각형
+                 ===================================================== -->
+                            <Path
+                Data="
+                    M 30,16
+                    L 210,16
+
+                    C 219,16
+                      224,22
+                      224,31
+
+                    L 224,209
+
+                    C 224,218
+                      218,224
+                      209,224
+
+                    L 30,224
+
+                    C 21,224
+                      16,218
+                      16,209
+
+                    L 16,31
+
+                    C 16,22
+                      21,16
+                      30,16
+
+                    Z"
+                Stroke="{x:Bind BtnGeneral.Foreground, Mode=OneWay}"
+                StrokeThickness="9"
+                StrokeLineJoin="Round"
+                Fill="Transparent"/>
+
+
+                            <!-- =====================================================
+                 2. 첫 번째 Slider Line
+                 ===================================================== -->
+                            <Path
+                Data="M 39,52 L 199,52"
+                Stroke="{x:Bind BtnGeneral.Foreground, Mode=OneWay}"
+                StrokeThickness="7"
+                StrokeStartLineCap="Round"
+                StrokeEndLineCap="Round"/>
+
+                            <!-- 첫 번째 Slider Knob -->
+                            <Path
+                Data="
+                    M 53,39
+                    L 62,39
+                    C 65,39 67,41 67,44
+                    L 67,61
+                    C 67,64 65,66 62,66
+                    L 53,66
+                    C 50,66 48,64 48,61
+                    L 48,44
+                    C 48,41 50,39 53,39
+                    Z"
+                Fill="{x:Bind BtnGeneral.Foreground, Mode=OneWay}"/>
+
+
+                            <!-- =====================================================
+                 3. 두 번째 Slider Line
+                 ===================================================== -->
+                            <Path
+                Data="M 39,91 L 199,91"
+                Stroke="{x:Bind BtnGeneral.Foreground, Mode=OneWay}"
+                StrokeThickness="7"
+                StrokeStartLineCap="Round"
+                StrokeEndLineCap="Round"/>
+
+                            <!-- 두 번째 Slider Knob -->
+                            <Path
+                Data="
+                    M 166,77
+                    L 175,77
+                    C 178,77 180,79 180,82
+                    L 180,100
+                    C 180,103 178,105 175,105
+                    L 166,105
+                    C 163,105 161,103 161,100
+                    L 161,82
+                    C 161,79 163,77 166,77
+                    Z"
+                Fill="{x:Bind BtnGeneral.Foreground, Mode=OneWay}"/>
+
+
+                            <!-- =====================================================
+                 4. 세 번째 Slider Line
+                 ===================================================== -->
+                            <Path
+                Data="M 39,131 L 199,131"
+                Stroke="{x:Bind BtnGeneral.Foreground, Mode=OneWay}"
+                StrokeThickness="7"
+                StrokeStartLineCap="Round"
+                StrokeEndLineCap="Round"/>
+
+                            <!-- 세 번째 Slider Knob -->
+                            <Path
+                Data="
+                    M 53,117
+                    L 62,117
+                    C 65,117 67,119 67,122
+                    L 67,140
+                    C 67,143 65,145 62,145
+                    L 53,145
+                    C 50,145 48,143 48,140
+                    L 48,122
+                    C 48,119 50,117 53,117
+                    Z"
+                Fill="{x:Bind BtnGeneral.Foreground, Mode=OneWay}"/>
+
+
+                            <!-- =====================================================
+                 5. 하단 왼쪽 버튼
+                 ===================================================== -->
+                            <Path
+                Data="
+                    M 38,166
+                    L 62,166
+
+                    C 66,166
+                      68,169
+                      68,173
+
+                    L 68,195
+
+                    C 68,199
+                      66,201
+                      62,201
+
+                    L 38,201
+
+                    C 34,201
+                      32,199
+                      32,195
+
+                    L 32,173
+
+                    C 32,169
+                      34,166
+                      38,166
+
+                    Z"
+                Stroke="{x:Bind BtnGeneral.Foreground, Mode=OneWay}"
+                StrokeThickness="7"
+                StrokeLineJoin="Round"
+                Fill="Transparent"/>
+
+
+                            <!-- =====================================================
+                 6. 하단 중앙 버튼
+                 ===================================================== -->
+                            <Path
+                Data="
+                    M 105,166
+                    L 129,166
+
+                    C 133,166
+                      135,169
+                      135,173
+
+                    L 135,195
+
+                    C 135,199
+                      133,201
+                      129,201
+
+                    L 105,201
+
+                    C 101,201
+                      99,199
+                      99,195
+
+                    L 99,173
+
+                    C 99,169
+                      101,166
+                      105,166
+
+                    Z"
+                Stroke="{x:Bind BtnGeneral.Foreground, Mode=OneWay}"
+                StrokeThickness="7"
+                StrokeLineJoin="Round"
+                Fill="Transparent"/>
+
+
+                            <!-- =====================================================
+                 7. 하단 오른쪽 버튼
+                 ===================================================== -->
+                            <Path
+                Data="
+                    M 172,166
+                    L 196,166
+
+                    C 200,166
+                      202,169
+                      202,173
+
+                    L 202,195
+
+                    C 202,199
+                      200,201
+                      196,201
+
+                    L 172,201
+
+                    C 168,201
+                      166,199
+                      166,195
+
+                    L 166,173
+
+                    C 166,169
+                      168,166
+                      172,166
+
+                    Z"
+                Stroke="{x:Bind BtnGeneral.Foreground, Mode=OneWay}"
+                StrokeThickness="7"
+                StrokeLineJoin="Round"
+                Fill="Transparent"/>
+
+                        </Grid>
+                    </Viewbox>
+                </Button>
+
+                <!-- 6. JACK SETTING -->
+                <Button x:Name="BtnJack"
+        Grid.Row="1"
+        Grid.Column="4" Grid.ColumnSpan="2"
+        Style="{StaticResource MenuButtonStyle}"
+        Tag="스트랜드잭 셋팅"
+        HorizontalContentAlignment="Center"
+        VerticalContentAlignment="Center"
+        PointerEntered="MenuButton_PointerEntered"
+        PointerExited="MenuButton_PointerExited"
+        Click="ProtectedSetting_Click">
+
+                    <Viewbox Width="90"
+             Height="90"
+             Stretch="Uniform">
+
+                        <!-- 첨부 이미지 비율에 맞춘 좌표계 -->
+                        <Grid Width="240"
+              Height="248">
+
+                            <!-- =====================================================
+                 1. 상단 뚜껑(긴 라운드 바)
+                 ===================================================== -->
+                            <Path
+                Data="
+                    M 18,18
+                    L 182,18
+
+                    C 190,18 195,23 195,31
+                    L 195,40
+
+                    C 195,48 190,53 182,53
+                    L 18,53
+
+                    C 10,53 5,48 5,40
+                    L 5,31
+
+                    C 5,23 10,18 18,18
+
+                    Z"
+                Stroke="{x:Bind BtnJack.Foreground, Mode=OneWay}"
+                StrokeThickness="9"
+                StrokeLineJoin="Round"
+                Fill="Transparent"/>
+
+                            <!-- =====================================================
+                 2. 뚜껑 아래 목(Neck) 부분
+                 ===================================================== -->
+                            <Path
+                Data="
+                    M 24,53
+                    L 176,53
+                    L 176,68
+                    L 24,68
+                    Z"
+                Stroke="{x:Bind BtnJack.Foreground, Mode=OneWay}"
+                StrokeThickness="9"
+                StrokeLineJoin="Round"
+                Fill="Transparent"/>
+
+                            <!-- =====================================================
+                 3. 잭 바디
+                 우하단은 기어가 겹치므로 전체 바디를 그리고
+                 나중에 기어가 자연스럽게 덮도록 구성
+                 ===================================================== -->
+                            <Path
+                Data="
+                    M 10,68
+                    L 186,68
+
+                    C 194,68 199,73 199,81
+                    L 199,214
+
+                    C 199,222 194,227 186,227
+                    L 10,227
+
+                    C 2,227 -3,222 -3,214
+                    L -3,81
+
+                    C -3,73 2,68 10,68
+
+                    Z"
+                Stroke="{x:Bind BtnJack.Foreground, Mode=OneWay}"
+                StrokeThickness="9"
+                StrokeLineJoin="Round"
+                Fill="Transparent"/>
+
+                            <!-- =====================================================
+                 4. 기어 외곽
+                 첨부 이미지의 우하단 톱니형 기어
+                 ===================================================== -->
+                            <Path
+                Data="
+                    M 153,122
+                    L 168,115
+                    L 180,127
+                    L 197,122
+                    L 205,136
+                    L 221,141
+                    L 221,159
+                    L 205,164
+                    L 197,178
+                    L 180,173
+                    L 168,185
+                    L 153,178
+                    L 138,185
+                    L 126,173
+                    L 109,178
+                    L 101,164
+                    L 85,159
+                    L 85,141
+                    L 101,136
+                    L 109,122
+                    L 126,127
+                    L 138,115
+                    Z"
+                Stroke="{x:Bind BtnJack.Foreground, Mode=OneWay}"
+                StrokeThickness="9"
+                StrokeLineJoin="Round"
+                Fill="Transparent"/>
+
+                            <!-- =====================================================
+                 5. 기어 내부 링
+                 ===================================================== -->
+                            <Path
+                Data="
+                    M 185,150
+                    A 25,25 0 1 1 135,150
+                    A 25,25 0 1 1 185,150"
+                Stroke="{x:Bind BtnJack.Foreground, Mode=OneWay}"
+                StrokeThickness="9"
+                StrokeLineJoin="Round"
+                Fill="Transparent"/>
+
+                            <!-- =====================================================
+                 6. 기어 중심 원
+                 ===================================================== -->
+                            <Path
+                Data="
+                    M 170,150
+                    A 10,10 0 1 1 150,150
+                    A 10,10 0 1 1 170,150"
+                Stroke="{x:Bind BtnJack.Foreground, Mode=OneWay}"
+                StrokeThickness="9"
+                StrokeLineJoin="Round"
+                Fill="Transparent"/>
+
+                        </Grid>
+                    </Viewbox>
+                </Button>
+                <Button Loaded="OnLocalizedLoaded" x:Name="BtnChangeModel"
+                        Grid.Row="1" Grid.Column="6" Grid.ColumnSpan="2"
+                        Style="{StaticResource MenuButtonStyle}" Tag="모델 변경"
+                        HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                        PointerEntered="MenuButton_PointerEntered" PointerExited="MenuButton_PointerExited"
+                        Click="MenuButton_Click">
+                    <Viewbox Width="108" Height="108" Stretch="Uniform">
+                        <Grid Width="108" Height="108">
+                            <Rectangle Width="40" Height="40" RadiusX="8" RadiusY="8"
+                                       HorizontalAlignment="Left" VerticalAlignment="Top" Margin="8,8,0,0" Fill="#6CB9EA"/>
+                            <Rectangle Width="40" Height="40" RadiusX="8" RadiusY="8"
+                                       HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,8,8" Fill="#A9D4EE"/>
+                            <Path Data="M 64,12 L 54,22 L 64,32 M 54,22 H 78 Q 88,22 88,32 V 44"
+                                  Stroke="#2E9DE6" StrokeThickness="7" StrokeLineJoin="Round"
+                                  StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+                            <Path Data="M 44,96 L 54,86 L 44,76 M 54,86 H 30 Q 20,86 20,76 V 64"
+                                  Stroke="#2E9DE6" StrokeThickness="7" StrokeLineJoin="Round"
+                                  StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+                        </Grid>
+                    </Viewbox>
+                </Button>
+            </Grid>
+        </Viewbox>
+
+        <!-- [Row 2: Footer] 화면 크기가 변해도 항상 바닥에 고정되는 하단 영역 -->
+        <Grid Grid.Row="2" Margin="40,0,40,40">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- 회사 정보 -->
+            <TextBlock Loaded="OnLocalizedLoaded"
+        Grid.Column="0"
+        Text="(주)대하 051-326-1870"
+        Foreground="Black"
+        FontWeight="Black"
+        FontSize="20"
+        HorizontalAlignment="Left"
+        VerticalAlignment="Center"/>
+            <!-- EXIT -->
+            <Button x:Name="BtnExit"
+        Grid.Column="1"
+        Style="{StaticResource ExitButtonStyle}"
+        Width="68"
+        Height="68"
+        HorizontalAlignment="Right"
+        VerticalAlignment="Center"
+        Background="White"
+        Foreground="Black"
+        PointerEntered="MenuButton_PointerEntered"
+        PointerExited="MenuButton_PointerExited"
+        Click="BtnExit_Click">
+
+                <Viewbox Width="66"
+             Height="66"
+             Stretch="Uniform">
+
+                    <Grid Width="108"
+              Height="124">
+
+                        <!-- 문 프레임 -->
+                        <Path
+                Data="M 80,36 L 80,23 L 19,23 L 19,109 L 80,109 L 80,96"
+                Stroke="{x:Bind BtnExit.Foreground, Mode=OneWay}"
+                StrokeThickness="9"
+                StrokeLineJoin="Miter"
+                StrokeStartLineCap="Square"
+                StrokeEndLineCap="Square"
+                Fill="Transparent"/>
+
+                        <!-- 화살표 수평선 -->
+                        <Path
+                Data="M 57,66 L 102,66"
+                Stroke="{x:Bind BtnExit.Foreground, Mode=OneWay}"
+                StrokeThickness="9"
+                StrokeStartLineCap="Square"
+                StrokeEndLineCap="Square"/>
+
+                        <!-- 화살표 머리 -->
+                        <Path
+                Data="M 89,52 L 103,66 L 89,80"
+                Stroke="{x:Bind BtnExit.Foreground, Mode=OneWay}"
+                StrokeThickness="9"
+                StrokeLineJoin="Miter"
+                StrokeStartLineCap="Square"
+                StrokeEndLineCap="Square"
+                Fill="Transparent"/>
+
+                    </Grid>
+                </Viewbox>
+            </Button>
+        </Grid>
+
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Spacing="8" HorizontalAlignment="Right"
+                    VerticalAlignment="Top" Margin="0,8,12,0" IsHitTestVisible="False">
+            <TextBlock Loaded="OnLocalizedLoaded" Text="현재 시각" Foreground="White" VerticalAlignment="Center"/>
+            <TextBlock x:Name="MainMenuCurrentTime" Text="--:--:--" Foreground="White" FontSize="18"
+                       FontFamily="Consolas" FontWeight="SemiBold" VerticalAlignment="Center"/>
+        </StackPanel>
+
+        <!-- PLC communication banner: does not intercept menu input. -->
+        <Border x:Name="PlcConnectionBanner" Grid.Row="2"
+                HorizontalAlignment="Center" VerticalAlignment="Center"
+                Margin="24,0" Padding="24,12" CornerRadius="8"
+                Background="#475569" IsHitTestVisible="False">
+            <TextBlock x:Name="PlcConnectionMessage" FontSize="15" FontWeight="SemiBold"
+                       Foreground="White" TextWrapping="Wrap" TextAlignment="Center"/>
+        </Border>
+        <Button x:Name="SimulationModeButton" Grid.Row="2" HorizontalAlignment="Right"
+                VerticalAlignment="Bottom" Margin="0,0,24,8" Click="DeveloperSimulation_Click"
+                Loaded="OnLocalizedLoaded" Content="시뮬레이션"/>
+    </Grid>
+</UserControl>
+

@@ -1,0 +1,9 @@
+﻿namespace DHLS_StrandJack
+{
+	[default_interface]
+	runtimeclass MainMenuView : Microsoft.UI.Xaml.Controls.UserControl
+	{
+		MainMenuView();
+		Int32 MyProperty;
+	}
+}

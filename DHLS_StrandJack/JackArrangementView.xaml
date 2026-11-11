@@ -1,0 +1,349 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<UserControl
+    x:Class="DHLS_StrandJack.JackArrangementView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:DHLS_StrandJack"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    RequestedTheme="Light"
+    Background="#f1f5f9"
+    Width="1280" Height="780">
+
+    <UserControl.Resources>
+        <SolidColorBrush x:Key="BackgroundBrush" Color="#F8FAFC"/>
+        <SolidColorBrush x:Key="PanelLineBrush" Color="#D1D5DB"/>
+        <SolidColorBrush x:Key="BlueSelectionBrush" Color="#2563EB"/>
+        <LinearGradientBrush x:Key="MetalGradient" StartPoint="0,0.5" EndPoint="1,0.5">
+            <GradientStop Offset="0" Color="#6B7280"/>
+            <GradientStop Offset="0.25" Color="#D1D5DB"/>
+            <GradientStop Offset="0.50" Color="#F3F4F6"/>
+            <GradientStop Offset="0.80" Color="#9CA3AF"/>
+            <GradientStop Offset="1" Color="#4B5563"/>
+        </LinearGradientBrush>
+
+        <!-- Each instance gets its own drawing and labels from the code-behind. -->
+        <DataTemplate x:Key="CylinderVisualTemplate">
+            <Border Background="Black" BorderBrush="#1F2937" BorderThickness="1" Padding="2">
+                <!-- SVG preserveAspectRatio='none' => Stretch='Fill'. -->
+                <Viewbox Stretch="Fill" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                    <Canvas Width="100" Height="140">
+                        <!-- Top valves -->
+                        <Rectangle Canvas.Left="25" Canvas.Top="4" Width="12" Height="10"
+                                   RadiusX="2" RadiusY="2" Fill="#6B7280" Stroke="#374151" StrokeThickness="1"/>
+                        <Rectangle Canvas.Left="42" Canvas.Top="0" Width="16" Height="14"
+                                   RadiusX="2" RadiusY="2" Fill="#4B5563" Stroke="#1F2937" StrokeThickness="1"/>
+                        <Rectangle Canvas.Left="63" Canvas.Top="4" Width="12" Height="10"
+                                   RadiusX="2" RadiusY="2" Fill="#6B7280" Stroke="#374151" StrokeThickness="1"/>
+
+                        <!-- Top metallic body -->
+                        <Path Data="M 10 16 L 90 16 C 95 16 95 20 95 25 L 95 90 L 5 90 L 5 25 C 5 20 5 16 10 16 Z"
+                              Fill="{StaticResource MetalGradient}" Stroke="#374151" StrokeThickness="2"/>
+                        <Line X1="5" Y1="28" X2="95" Y2="28" Stroke="#6B7280" StrokeThickness="1.5"/>
+                        <Line X1="5" Y1="34" X2="95" Y2="34" Stroke="#4B5563" Opacity="0.5" StrokeThickness="1"/>
+                        <Line X1="5" Y1="85" X2="95" Y2="85" Stroke="#4B5563" Opacity="0.5" StrokeThickness="1"/>
+
+                        <!-- Color is assigned in C++ (same four hex codes as HTML). -->
+                        <Path x:Name="CylinderLowerBody"
+                              Data="M 5 90 L 95 90 L 95 128 C 95 135 90 138 85 138 L 15 138 C 10 138 5 135 5 128 Z"
+                              Fill="#FF2020" Stroke="#374151" StrokeThickness="2"/>
+
+                        <TextBlock Canvas.Left="0" Canvas.Top="98" Width="100"
+                                   TextAlignment="Center" FontSize="12" FontWeight="Bold"
+                                   Foreground="#111827" Text="x1"/>
+                        <TextBlock x:Name="CylinderNumber" Canvas.Left="0" Canvas.Top="114" Width="100"
+                                   TextAlignment="Center" FontSize="18" FontWeight="Black"
+                                   Foreground="#111827" Text="1-1"/>
+                    </Canvas>
+                </Viewbox>
+            </Border>
+        </DataTemplate>
+
+        <Style x:Key="FooterButtonStyle" TargetType="Button">
+            <Setter Property="Width" Value="120"/>
+            <Setter Property="Height" Value="38"/>
+            <Setter Property="MinWidth" Value="0"/>
+            <Setter Property="Padding" Value="18,6"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Foreground" Value="#1F2937"/>
+            <Setter Property="BorderBrush" Value="#D1D5DB"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="4"/>
+        </Style>
+    </UserControl.Resources>
+
+    <!-- HTML: w-[800px] bg-[#F8FAFC] border rounded-[8px] shadow-2xl flex flex-col -->
+    <Border Background="#F8FAFC"
+            BorderBrush="#D1D5DB" BorderThickness="1"
+            CornerRadius="8"
+            HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="56"/>  <!-- Header -->
+                <RowDefinition Height="*"/>  <!-- Main Content -->
+                <RowDefinition Height="70"/>  <!-- Footer -->
+            </Grid.RowDefinitions>
+
+            <!-- ==========================================
+                 HEADER ? HTML: p-[16px] border-b bg-white
+                 ========================================== -->
+            <Border Grid.Row="0" Background="White"
+                    BorderBrush="#E5E7EB" BorderThickness="0,0,0,1"
+                    Padding="16" CornerRadius="8,8,0,0">
+    <Grid>
+                    <!-- HTML: <h1>Jack Arrangement</h1> -->
+                    <TextBlock Loaded="OnLocalizedLoaded" Text="Jack Arrangement"
+                               FontSize="16" FontWeight="Bold"
+                               HorizontalAlignment="Left" VerticalAlignment="Center"
+                               Foreground="#1F2937"/>
+                    <!-- 닫기(X) 버튼 -->
+                    <Button Loaded="OnLocalizedLoaded" x:Name="CloseBtn"
+                            HorizontalAlignment="Right" VerticalAlignment="Center"
+                            Width="24" Height="24"
+                            Padding="0"
+                            Background="Transparent" BorderThickness="0"
+                            Click="{x:Bind Close}"
+                            ToolTipService.ToolTip="닫기">
+                        <FontIcon Glyph="&#xE711;" FontSize="12" Foreground="#6B7280"/>
+                    </Button>
+                </Grid>
+            </Border>
+
+            <!-- ==========================================
+                 MAIN CONTENT ? HTML: p-[16px] flex flex-col gap-[16px]
+                 ========================================== -->
+            <StackPanel Grid.Row="1" Padding="16" Spacing="16">
+
+                <!-- ==== Top: Cylinder Grid Container ==== -->
+                <!-- HTML: bg-black p-[4px] rounded-[4px] -->
+                <Border Background="Black" Padding="4" CornerRadius="4">
+
+                    <!-- HTML: grid grid-cols-8 grid-rows-4 gap-[4px] h-[360px] -->
+                    <Grid x:Name="CylinderGrid"
+                          Height="360"
+                          CornerRadius="4">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- 잭 UI 요소는 C++ InitializeGrid()에서 생성합니다. -->
+                    </Grid>
+                </Border>
+
+                <!-- ==== Bottom: Template Selector ==== -->
+                <!-- HTML: flex flex-col gap-[8px] -->
+                <StackPanel Spacing="8">
+
+                    <!-- 템플릿 제목 -->
+                    <TextBlock Loaded="OnLocalizedLoaded" Text="템플릿"
+                               FontSize="16" FontWeight="Medium"
+                               Foreground="#374151"/>
+
+                    <!-- HTML: bg-white border p-[16px] rounded-[8px] flex gap-[16px] justify-center -->
+                    <Border Background="White"
+                            BorderBrush="#E5E7EB" BorderThickness="1"
+                            Padding="16" CornerRadius="8">
+                        <StackPanel Orientation="Horizontal"
+                                    HorizontalAlignment="Center" Spacing="16">
+
+                            <!-- Template 1: 2 Horizontal Boxes -->
+                            <!-- HTML: @click="selectTemplate(1)" :class="activeTemplate===1?'border-[#2563EB]'... -->
+                            <Border x:Name="Template1Border" Width="120" Height="100"
+                                    Background="#F3F4F6" BorderBrush="Transparent" BorderThickness="4" CornerRadius="8">
+                                <Button Loaded="OnLocalizedLoaded" Padding="0" Background="Transparent" BorderThickness="0"
+                                        HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                        HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                                        Click="{x:Bind SelectTemplate1}" Tag="1" ToolTipService.ToolTip="1라인 배치 (8포트)">
+                                    <StackPanel Spacing="3" HorizontalAlignment="Center">
+                                    <Grid Width="72" Height="52" Background="#1F2937"
+                                          Padding="4" CornerRadius="4" RowSpacing="4" ColumnSpacing="4">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="*"/>
+                                        </Grid.RowDefinitions>
+                                        <Border Grid.Row="0" Background="#B91C1C" CornerRadius="2"/>
+                                    </Grid>
+                                    <TextBlock Loaded="OnLocalizedLoaded" Text="1라인 배치" FontSize="11" HorizontalAlignment="Center"/>
+                                    </StackPanel>
+                                </Button>
+                            </Border>
+
+                            <!-- Template 2: two rows of eight, split into four ports on each side -->
+                            <Border x:Name="Template2Border" Width="120" Height="100"
+                                    Background="#F3F4F6" BorderBrush="Transparent" BorderThickness="4" CornerRadius="8">
+                                <Button Loaded="OnLocalizedLoaded" Padding="0" Background="Transparent" BorderThickness="0"
+                                        HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                        HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                                        Click="{x:Bind SelectTemplate2}" Tag="2" ToolTipService.ToolTip="2라인 병렬 배치 (16포트)">
+                                    <StackPanel Spacing="3" HorizontalAlignment="Center">
+                                    <Grid Width="72" Height="52" Background="#1F2937"
+                                          Padding="4" CornerRadius="4" RowSpacing="4" ColumnSpacing="4">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="*"/><RowDefinition Height="*"/>
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/><ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Border Grid.Row="0" Grid.Column="0" Background="#B91C1C" CornerRadius="2"/>
+                                        <Border Grid.Row="1" Grid.Column="0" Background="#B91C1C" CornerRadius="2"/>
+                                        <Border Grid.Row="0" Grid.Column="1" Background="#15803D" CornerRadius="2"/>
+                                        <Border Grid.Row="1" Grid.Column="1" Background="#15803D" CornerRadius="2"/>
+                                    </Grid>
+                                    <TextBlock Loaded="OnLocalizedLoaded" Text="2라인 병렬" FontSize="11" HorizontalAlignment="Center"/>
+                                    </StackPanel>
+                                </Button>
+                            </Border>
+
+                            <Border x:Name="StackedTwoLineBorder" Width="120" Height="100"
+                                    Background="#F3F4F6" BorderBrush="Transparent" BorderThickness="4" CornerRadius="8">
+                                <Button Loaded="OnLocalizedLoaded" Padding="0" Background="Transparent" BorderThickness="0"
+                                        HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                        HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                                        Click="{x:Bind SelectStackedTwoLine}" ToolTipService.ToolTip="2라인 배치 (위·아래 각 8포트)">
+                                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Spacing="3">
+                                    <Grid Width="72" Height="52" Background="#1F2937" Padding="4" RowSpacing="4">
+                                        <Grid.RowDefinitions><RowDefinition Height="*"/><RowDefinition Height="*"/></Grid.RowDefinitions>
+                                        <Border Grid.Row="0" Background="#B91C1C" CornerRadius="2"/>
+                                        <Border Grid.Row="1" Background="#15803D" CornerRadius="2"/>
+                                    </Grid>
+                                    <TextBlock Loaded="OnLocalizedLoaded" Text="2라인 배치" FontSize="11" HorizontalAlignment="Center"/>
+                                </StackPanel>
+                                </Button>
+                            </Border>
+
+                            <!-- Template 3: three-line option, currently disabled -->
+                            <Border x:Name="Template3Border" Width="120" Height="100"
+                                    Background="#F3F4F6" BorderBrush="Transparent" BorderThickness="4" CornerRadius="8" Opacity="0.4">
+                                <Button Padding="0" Background="Transparent" BorderThickness="0"
+                                        IsEnabled="False"
+                                        HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                        HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                                        Click="{x:Bind SelectTemplate3}" Tag="3">
+                                    <StackPanel Spacing="2" HorizontalAlignment="Center">
+                                    <Grid Width="72" Height="52" Background="#1F2937"
+                                          Padding="4" CornerRadius="4" RowSpacing="4" ColumnSpacing="4">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="*"/>
+                                            <RowDefinition Height="*"/>
+                                            <RowDefinition Height="*"/>
+                                        </Grid.RowDefinitions>
+                                        <Border Grid.Row="0" Background="#B91C1C" CornerRadius="2"/>
+                                        <Border Grid.Row="1" Background="#15803D" CornerRadius="2"/>
+                                        <Border Grid.Row="2" Background="#FACC15" CornerRadius="2"/>
+                                    </Grid>
+                                    <TextBlock Loaded="OnLocalizedLoaded" Text="3라인 배치" FontSize="11" HorizontalAlignment="Center"/>
+                                    </StackPanel>
+                                </Button>
+                            </Border>
+
+                            <Border Width="120" Height="100" Background="#F3F4F6" Opacity="0.4" CornerRadius="8">
+                                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Spacing="3">
+                                    <Grid Width="72" Height="52" Background="#1F2937" Padding="4" RowSpacing="4">
+                                        <Grid.RowDefinitions><RowDefinition Height="*"/><RowDefinition Height="*"/><RowDefinition Height="*"/><RowDefinition Height="*"/></Grid.RowDefinitions>
+                                        <Border Grid.Row="0" Background="#B91C1C" CornerRadius="2"/>
+                                        <Border Grid.Row="1" Background="#15803D" CornerRadius="2"/>
+                                        <Border Grid.Row="2" Background="#FACC15" CornerRadius="2"/>
+                                        <Border Grid.Row="3" Background="#0E7490" CornerRadius="2"/>
+                                    </Grid>
+                                    <TextBlock Loaded="OnLocalizedLoaded" Text="4라인 배치" FontSize="11" HorizontalAlignment="Center"/>
+                                </StackPanel>
+                            </Border>
+
+                            <!-- Template 4: 2x2 Grid Boxes -->
+                            <Border x:Name="Template4Border" Width="120" Height="100"
+                                    Background="#F3F4F6" BorderBrush="Transparent" BorderThickness="4" CornerRadius="8" Opacity="0.4">
+                                <Button Padding="0" Background="Transparent" BorderThickness="0"
+                                        IsEnabled="False"
+                                        HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                        HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                                        Click="{x:Bind SelectTemplate4}" Tag="4">
+                                    <Grid Width="72" Height="64" Background="#1F2937"
+                                          Padding="4" CornerRadius="4" RowSpacing="4" ColumnSpacing="4">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="*"/>
+                                            <RowDefinition Height="*"/>
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Border Grid.Row="0" Grid.Column="0" Background="#B91C1C" CornerRadius="2"/>
+                                        <Border Grid.Row="0" Grid.Column="1" Background="#15803D" CornerRadius="2"/>
+                                        <Border Grid.Row="1" Grid.Column="0" Background="#FACC15" CornerRadius="2"/>
+                                        <Border Grid.Row="1" Grid.Column="1" Background="#0E7490" CornerRadius="2"/>
+                                    </Grid>
+                                </Button>
+                            </Border>
+
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </StackPanel>
+
+            <!-- ==========================================
+                 FOOTER ? HTML: p-[16px] flex justify-center gap-[16px] border-t bg-gray-50
+                 ========================================== -->
+            <Border Grid.Row="2" Background="#F9FAFB"
+                    BorderBrush="#E5E7EB" BorderThickness="0,1,0,0"
+                    Padding="16" CornerRadius="0,0,8,8">
+                <StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Center" Spacing="16">
+
+                    <!-- 확인 버튼 -->
+                    <Button Loaded="OnLocalizedLoaded" x:Name="OkBtn" Style="{StaticResource FooterButtonStyle}"
+                            Width="120"
+                            Padding="18,6"
+                            Background="White"
+                            BorderBrush="#D1D5DB" BorderThickness="1"
+                            FontSize="16" FontWeight="Medium"
+                            Click="{x:Bind Confirm}">
+                        <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                            <Viewbox Width="16" Height="16" VerticalAlignment="Center">
+                                <SymbolIcon Symbol="Accept"/>
+                            </Viewbox>
+                            <TextBlock Loaded="OnLocalizedLoaded" Text="OK" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+
+                    <!-- 취소 버튼 -->
+                    <Button Loaded="OnLocalizedLoaded" x:Name="CancelBtn" Style="{StaticResource FooterButtonStyle}"
+                            Width="120"
+                            Padding="18,6"
+                            Background="White"
+                            BorderBrush="#D1D5DB" BorderThickness="1"
+                            FontSize="16" FontWeight="Medium"
+                            Click="{x:Bind Cancel}">
+                        <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                            <Viewbox Width="16" Height="16" VerticalAlignment="Center">
+                                <SymbolIcon Symbol="Cancel"/>
+                            </Viewbox>
+                            <TextBlock Loaded="OnLocalizedLoaded" Text="Cancel" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </Border>
+    </Grid>
+    </Border>
+</UserControl>
+
+<!-- =========================================================
+     JackArrangementView.xaml: 잭 배치 UserControl
+     HTML 잭 배치 화면을 WinUI 3 UserControl로 구성합니다.
+     구성: Header + Cylinder Grid + Template Selector + Footer
+     DHLS_StrandJack 프로젝트: Microsoft.UI.Xaml (WinUI 3)
+     ========================================================= -->

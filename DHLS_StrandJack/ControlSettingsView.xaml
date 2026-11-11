@@ -1,0 +1,788 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UserControl
+    x:Class="DHLS_StrandJack.ControlSettingsView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:DHLS_StrandJack"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    RequestedTheme="Light"
+    Background="#f1f5f9"
+    FontFamily="Malgun Gothic"
+    HorizontalAlignment="Stretch"
+    VerticalAlignment="Stretch">
+
+    <!-- Theme Resource for Input Background -->
+    <UserControl.Resources>
+        <SolidColorBrush x:Key="InputBackgroundBrush" Color="#fefce8" />
+        <!-- Tailwind yellow-50 -->
+        <SolidColorBrush x:Key="HeaderBackgroundBrush" Color="#64748b" />
+        <!-- Tailwind slate-500 -->
+        <SolidColorBrush x:Key="DangerButtonBrush" Color="Firebrick"/>
+
+        <!-- TextBox / NumberBox 활성화(Focus) 시 파란색 테두리 -->
+        <SolidColorBrush x:Key="TextControlBorderBrushFocused" Color="#2563EB"/>
+        <Thickness x:Key="TextControlBorderThemeThicknessFocused">2</Thickness>
+
+        <!-- 숫자 입력 공통: 최대 6자리 + Up/Down -->
+        <Style x:Key="SixDigitNumberBoxStyle" TargetType="NumberBox">
+            <Setter Property="Minimum" Value="0"/>
+            <Setter Property="Maximum" Value="999999"/>
+            <Setter Property="SmallChange" Value="1"/>
+            <Setter Property="LargeChange" Value="10"/>
+            <Setter Property="SpinButtonPlacementMode" Value="Compact"/>
+            <Setter Property="IsWrapEnabled" Value="False"/>
+            <Setter Property="Width" Value="180"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="MinWidth" Value="0"/>
+        </Style>
+    </UserControl.Resources>
+
+    <!-- Scale the complete design, including footer, to the actual client viewport. -->
+    <Grid>
+    <Viewbox x:Name="SettingsContent" Stretch="Uniform" StretchDirection="Both"
+             HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+    <Grid Width="1024" Height="800"
+        Background="#f1f5f9"
+        HorizontalAlignment="Stretch"
+        VerticalAlignment="Stretch">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <!-- Settings cards and full-width jack list follow the supplied dashboard layout. -->
+        <Grid Grid.Row="0" Padding="8,4,8,2" RowSpacing="4">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="390"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0" Text="General Setting" FontSize="18" FontWeight="SemiBold" Foreground="#111827" VerticalAlignment="Center" Margin="2,0"/>
+            <Grid Grid.Row="1" ColumnSpacing="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Border Grid.Column="0" Background="White" BorderBrush="#d1d5db" BorderThickness="1" CornerRadius="8" Padding="10,7">
+                    <Grid RowSpacing="4">
+                        <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/></Grid.RowDefinitions>
+                        <Border BorderBrush="#e5e7eb" BorderThickness="0,0,0,1" Padding="0,0,0,5">
+                            <TextBlock Text="Jack settings" FontSize="16" FontWeight="SemiBold" Foreground="#111827"/>
+                        </Border>
+                        <Grid Grid.Row="1">
+                            <StackPanel Spacing="2">
+<Grid ColumnSpacing="8" Padding="0,0">
+        <Grid.ColumnDefinitions><ColumnDefinition Width="145"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+        <TextBlock Loaded="OnLocalizedLoaded" Grid.Column="0" Text="Model 명" VerticalAlignment="Center" FontSize="12.5" Foreground="#374151"/>
+        <Grid Grid.Column="1"><TextBox x:Name="DashboardModelName" IsReadOnly="True" HorizontalAlignment="Stretch" MinHeight="26"/></Grid>
+    </Grid>
+<Grid ColumnSpacing="8" Padding="0,0">
+        <Grid.ColumnDefinitions><ColumnDefinition Width="145"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+        <TextBlock Loaded="OnLocalizedLoaded" Grid.Column="0" Text="압력 단위" VerticalAlignment="Center" FontSize="12.5" Foreground="#374151"/>
+        <Grid Grid.Column="1"><ComboBox x:Name="DashboardPressureUnit" HorizontalAlignment="Stretch" MinHeight="26"><ComboBoxItem Content="bar"/><ComboBoxItem Content="MPa"/><ComboBoxItem Content="psi"/></ComboBox></Grid>
+    </Grid>
+<Grid ColumnSpacing="8" Padding="0,0">
+        <Grid.ColumnDefinitions><ColumnDefinition Width="145"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+        <TextBlock Loaded="OnLocalizedLoaded" Grid.Column="0" Text="압력 소수점" VerticalAlignment="Center" FontSize="12.5" Foreground="#374151"/>
+        <Grid Grid.Column="1"><ComboBox x:Name="DashboardPressureDigits" HorizontalAlignment="Stretch" MinHeight="26"><ComboBoxItem Content="0"/><ComboBoxItem Content="1"/><ComboBoxItem Content="2"/></ComboBox></Grid>
+    </Grid>
+<Grid ColumnSpacing="8" Padding="0,0">
+        <Grid.ColumnDefinitions><ColumnDefinition Width="145"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+        <TextBlock Loaded="OnLocalizedLoaded" Grid.Column="0" Text="범위 단위" VerticalAlignment="Center" FontSize="12.5" Foreground="#374151"/>
+        <Grid Grid.Column="1"><TextBox Text="mm" IsReadOnly="True" HorizontalAlignment="Stretch" MinHeight="26"/></Grid>
+    </Grid>
+<Grid ColumnSpacing="8" Padding="0,0">
+        <Grid.ColumnDefinitions><ColumnDefinition Width="145"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+        <TextBlock Loaded="OnLocalizedLoaded" Grid.Column="0" Text="하중 단위" VerticalAlignment="Center" FontSize="12.5" Foreground="#374151"/>
+        <Grid Grid.Column="1"><ComboBox x:Name="DashboardWeightUnit" HorizontalAlignment="Stretch" MinHeight="26"><ComboBoxItem Content="Ton"/><ComboBoxItem Content="kN"/></ComboBox></Grid>
+    </Grid>
+<Grid ColumnSpacing="8" Padding="0,0">
+        <Grid.ColumnDefinitions><ColumnDefinition Width="145"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+        <TextBlock Loaded="OnLocalizedLoaded" Grid.Column="0" Text="하중 소수점" VerticalAlignment="Center" FontSize="12.5" Foreground="#374151"/>
+        <Grid Grid.Column="1"><ComboBox x:Name="DashboardWeightDigits" HorizontalAlignment="Stretch" MinHeight="26"><ComboBoxItem Content="1"/><ComboBoxItem Content="2"/></ComboBox></Grid>
+    </Grid>
+<Grid ColumnSpacing="8" Padding="0,0">
+        <Grid.ColumnDefinitions><ColumnDefinition Width="145"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+        <TextBlock Loaded="OnLocalizedLoaded" Grid.Column="0" Text="속도 제어 분해능" VerticalAlignment="Center" FontSize="12.5" Foreground="#374151"/>
+        <Grid Grid.Column="1"><NumberBox x:Name="DashboardSpeedResolution" Value="6000" SpinButtonPlacementMode="Compact" HorizontalAlignment="Stretch" MinHeight="26"/></Grid>
+    </Grid>
+<Grid ColumnSpacing="8" Padding="0,0">
+        <Grid.ColumnDefinitions><ColumnDefinition Width="145"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+        <TextBlock Loaded="OnLocalizedLoaded" Grid.Column="0" Text="PLC A/D 분해능" VerticalAlignment="Center" FontSize="12.5" Foreground="#374151"/>
+        <Grid Grid.Column="1"><NumberBox x:Name="DashboardPlcAdResolution" Value="4000" SpinButtonPlacementMode="Compact" HorizontalAlignment="Stretch" MinHeight="26"/></Grid>
+    </Grid>
+<Grid ColumnSpacing="8" Padding="0,0">
+        <Grid.ColumnDefinitions><ColumnDefinition Width="145"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+        <TextBlock Grid.Column="0" Text="Filter No." VerticalAlignment="Center" FontSize="12.5" Foreground="#374151"/>
+        <Grid Grid.Column="1"><NumberBox x:Name="DashboardFilter" Value="3" SpinButtonPlacementMode="Compact" HorizontalAlignment="Stretch" MinHeight="26"/></Grid>
+    </Grid>
+<Grid ColumnSpacing="8" Padding="0,0">
+        <Grid.ColumnDefinitions><ColumnDefinition Width="145"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+        <TextBlock Loaded="OnLocalizedLoaded" Grid.Column="0" Text="잭 수량" VerticalAlignment="Center" FontSize="12.5" Foreground="#374151"/>
+        <Grid Grid.Column="1"><ComboBox x:Name="DashboardJackCount" HorizontalAlignment="Stretch" MinHeight="26"><ComboBoxItem Content="1"/><ComboBoxItem Content="2"/><ComboBoxItem Content="3"/><ComboBoxItem Content="4"/><ComboBoxItem Content="5"/><ComboBoxItem Content="6"/><ComboBoxItem Content="7"/><ComboBoxItem Content="8"/><ComboBoxItem Content="9"/><ComboBoxItem Content="10"/><ComboBoxItem Content="11"/><ComboBoxItem Content="12"/><ComboBoxItem Content="13"/><ComboBoxItem Content="14"/><ComboBoxItem Content="15"/><ComboBoxItem Content="16"/></ComboBox></Grid>
+    </Grid>
+<StackPanel Visibility="Collapsed">
+                                <!-- General Settings -->
+                                <Grid Background="White" BorderBrush="#e5e7eb" BorderThickness="0,0,0,1" Padding="8,5">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="180"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Loaded="OnLocalizedLoaded" Grid.Column="0" Text="Language" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Medium" FontSize="14"/>
+                                    <ComboBox x:Name="LanguageSelect" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" MinHeight="28" Background="{StaticResource InputBackgroundBrush}" SelectedIndex="0" CornerRadius="4">
+                                        <ComboBoxItem Content="한글"/>
+                                        <ComboBoxItem Content="English"/>
+                                    </ComboBox>
+                                </Grid>
+
+                                <Grid Background="White" BorderBrush="#e5e7eb" BorderThickness="0,0,0,1" Padding="8,5">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="180"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Loaded="OnLocalizedLoaded" Grid.Column="0" Text="모델" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Medium" FontSize="14"/>
+                                    <TextBox x:Name="ModelNameTextBox" Grid.Column="1" IsReadOnly="True" TextAlignment="Center" MinHeight="28" Background="{StaticResource InputBackgroundBrush}" CornerRadius="4"/>
+                                </Grid>
+
+                                <Grid Background="White" BorderBrush="#e5e7eb" BorderThickness="0,0,0,1" Padding="8,5">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="180"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Loaded="OnLocalizedLoaded" Grid.Column="0" Text="고객" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Medium" FontSize="14"/>
+                                    <TextBox x:Name="CustomerInput" Grid.Column="1" TextAlignment="Center" MinHeight="28" Background="{StaticResource InputBackgroundBrush}" CornerRadius="4"/>
+                                </Grid>
+
+                                <Grid Background="White" BorderBrush="#e5e7eb" BorderThickness="0,0,0,1" Padding="8,5">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="180"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Loaded="OnLocalizedLoaded" Grid.Column="0" Text="작업자" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Medium" FontSize="14"/>
+                                    <TextBox x:Name="OperatorInput" Grid.Column="1" TextAlignment="Center" MinHeight="28" Background="{StaticResource InputBackgroundBrush}" CornerRadius="4"/>
+                                </Grid>
+
+                                <Grid Background="White" BorderBrush="#e5e7eb" BorderThickness="0,0,0,1" Padding="8,5">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="180"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Loaded="OnLocalizedLoaded" Grid.Column="0" Text="문서번호" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Medium" FontSize="14"/>
+                                    <TextBox x:Name="DocumentInput" Grid.Column="1" TextAlignment="Center" MinHeight="28" Background="{StaticResource InputBackgroundBrush}" CornerRadius="4"/>
+                                </Grid>
+
+                                <!-- ================= SENSOR Settings ================= -->
+                                <Border Background="{StaticResource HeaderBackgroundBrush}" Padding="6">
+                                    <TextBlock Loaded="OnLocalizedLoaded" Text="SENSOR Settings" Foreground="White" FontWeight="Bold" FontSize="12" HorizontalAlignment="Center"/>
+                                </Border>
+
+                                <Grid Background="White" BorderBrush="#e5e7eb" BorderThickness="0,0,0,1" Padding="8,5">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="180"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Loaded="OnLocalizedLoaded" Grid.Column="0" Text="압력단위" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Medium" FontSize="14"/>
+                                    <ComboBox x:Name="PressureUnitSelect" Grid.Column="1" HorizontalAlignment="Stretch" MinHeight="28" Background="{StaticResource InputBackgroundBrush}" SelectedIndex="0">
+                                        <ComboBoxItem Content="bar"/>
+                                        <ComboBoxItem Content="MPa"/>
+                                        <ComboBoxItem Content="psi"/>
+                                        <ComboBoxItem Content="kgf/cm²"/>
+                                    </ComboBox>
+                                </Grid>
+
+                                <Grid Background="White" BorderBrush="#e5e7eb" BorderThickness="0,0,0,1" Padding="8,5">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="180"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Loaded="OnLocalizedLoaded" Grid.Column="0" Text="중량단위" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Medium" FontSize="14"/>
+                                    <ComboBox x:Name="WeightUnitSelect" Grid.Column="1" HorizontalAlignment="Stretch" MinHeight="28" Background="{StaticResource InputBackgroundBrush}" SelectedIndex="0">
+                                        <ComboBoxItem Content="Ton"/>
+                                        <ComboBoxItem Content="kN"/>
+                                    </ComboBox>
+                                </Grid>
+
+                                <Grid Background="White" BorderBrush="#e5e7eb" BorderThickness="0,0,0,1" Padding="8,5">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="180"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Loaded="OnLocalizedLoaded" Grid.Column="0" Text="변위표시 자리수" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Medium" FontSize="14"/>
+                                    <ComboBox x:Name="DisplacementDigitsSelect" Grid.Column="1" HorizontalAlignment="Stretch" MinHeight="28" Background="{StaticResource InputBackgroundBrush}" SelectedIndex="0">
+                                        <ComboBoxItem Content="0"/>
+                                        <ComboBoxItem Content="1"/>
+                                        <ComboBoxItem Content="2"/>
+                                        <ComboBoxItem Content="3"/>
+                                    </ComboBox>
+                                </Grid>
+
+                                <Grid Background="White" BorderBrush="#e5e7eb" BorderThickness="0,0,0,1" Padding="8,5">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="180"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Loaded="OnLocalizedLoaded" Grid.Column="0" Text="하중 게이지 위치" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Medium" FontSize="14" TextWrapping="NoWrap"/>
+                                    <ComboBox x:Name="GaugePositionSelect" Grid.Column="1" HorizontalAlignment="Stretch" MinHeight="28" Background="{StaticResource InputBackgroundBrush}" SelectedIndex="0">
+                                        <ComboBoxItem Content="Right"/>
+                                        <ComboBoxItem Content="Bottom"/>
+                                    </ComboBox>
+                                </Grid>
+
+                                <Grid Background="White" BorderBrush="#e5e7eb" BorderThickness="0,0,0,1" Padding="8,5">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="180"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Loaded="OnLocalizedLoaded" Grid.Column="0" Text="하중 최소 영점" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Medium" FontSize="14"/>
+                                    <NumberBox x:Name="LoadMinZeroInput" Style="{StaticResource SixDigitNumberBoxStyle}" Grid.Column="1" Value="5" SpinButtonPlacementMode="Compact" MinHeight="28" Background="{StaticResource InputBackgroundBrush}"/>
+                                </Grid>
+
+                                <Grid Background="#fef2f2" BorderBrush="#e2e8f0" BorderThickness="0,0,0,1" Padding="8,4">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="180"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Loaded="OnLocalizedLoaded" Grid.Column="0" Text="압력센서 AD 스케일" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="12" Foreground="#7f1d1d" FontWeight="SemiBold" TextWrapping="NoWrap"/>
+                                    <ComboBox x:Name="PressureAdScaleInput" Grid.Column="1" HorizontalAlignment="Stretch" PlaceholderText="AD scale" MinHeight="28" Background="{StaticResource InputBackgroundBrush}"><ComboBoxItem Content="4000"/><ComboBoxItem Content="16000"/><ComboBoxItem Content="64000"/></ComboBox>
+                                </Grid>
+
+                                <Grid Background="#fef2f2" BorderBrush="#e2e8f0" BorderThickness="0,0,0,1" Padding="8,4">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="180"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Loaded="OnLocalizedLoaded" Grid.Column="0" Text="변위센서 AD 스케일" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="12" Foreground="#7f1d1d" FontWeight="SemiBold" TextWrapping="NoWrap"/>
+                                    <ComboBox x:Name="StrokeAdScaleInput" Grid.Column="1" HorizontalAlignment="Stretch" PlaceholderText="AD scale" MinHeight="28" Background="{StaticResource InputBackgroundBrush}"><ComboBoxItem Content="4000"/><ComboBoxItem Content="16000"/><ComboBoxItem Content="64000"/></ComboBox>
+                                </Grid>
+
+                                <TextBlock x:Name="ScaleConsistencyWarning" Foreground="#b91c1c" TextWrapping="Wrap" FontSize="12" Margin="8" Visibility="Collapsed"/>
+                                <!-- ================= PLC Settings ================= -->
+                                <Border Background="{StaticResource HeaderBackgroundBrush}" Padding="6">
+                                    <TextBlock Loaded="OnLocalizedLoaded" Text="PLC Settings" Foreground="White" FontWeight="Bold" FontSize="12" HorizontalAlignment="Center"/>
+                                </Border>
+
+                                <Grid Background="White" BorderBrush="#e5e7eb" BorderThickness="0,0,0,1" Padding="8,5">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="180"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Loaded="OnLocalizedLoaded" Grid.Column="0" Text="PLC MODEL" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Medium" FontSize="14"/>
+                                    <ComboBox x:Name="PlcModelSelect" Grid.Column="1" HorizontalAlignment="Stretch" MinHeight="28" Background="{StaticResource InputBackgroundBrush}" SelectedIndex="0">
+                                        <ComboBoxItem Content="LS"/>
+                                        <ComboBoxItem Loaded="OnLocalizedLoaded" Content="SIEMENS (미사용)" IsEnabled="False"/>
+                                    </ComboBox>
+                                </Grid>
+
+                                <Grid Background="White" BorderBrush="#e5e7eb" BorderThickness="0,0,0,1" Padding="8,5">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="180"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Loaded="OnLocalizedLoaded" Grid.Column="0" Text="PLC #" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Medium" FontSize="14"/>
+                                    <ComboBox Grid.Column="1" x:Name="PlcCountSelect" HorizontalAlignment="Stretch" MinHeight="28" Background="{StaticResource InputBackgroundBrush}" SelectedIndex="2">
+                                        <ComboBoxItem Content="1"/>
+                                        <ComboBoxItem Content="2"/>
+                                        <ComboBoxItem Content="3"/>
+                                        <ComboBoxItem Content="4"/>
+                                    </ComboBox>
+                                </Grid>
+
+                                <Grid Background="White" BorderBrush="#e5e7eb" BorderThickness="0,0,0,1" Padding="8,5">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="180"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Loaded="OnLocalizedLoaded" Grid.Column="0" Text="PT(HT) SENSOR# /" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Medium" FontSize="12"/>
+                                    <ComboBox Grid.Column="1" x:Name="SensorCountSelect" HorizontalAlignment="Stretch" MinHeight="28" Background="{StaticResource InputBackgroundBrush}" SelectedIndex="1">
+                                        <ComboBoxItem Content="1"/>
+                                        <ComboBoxItem Content="2"/>
+                                        <ComboBoxItem Content="3"/>
+                                        <ComboBoxItem Content="4"/>
+                                        <ComboBoxItem Content="5"/>
+                                        <ComboBoxItem Content="6"/>
+                                        <ComboBoxItem Content="7"/>
+                                        <ComboBoxItem Content="8"/>
+                                      </ComboBox>
+                                </Grid>
+
+                                <!-- Dynamic IP Container (ItemsControl for Data Binding) -->
+                                <ItemsControl x:Name="DynamicIpContainer">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid Background="#64748b" BorderBrush="#e2e8f0" BorderThickness="0,0,0,1" Padding="8,4">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="180"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Grid.Column="0" Text="{Binding Label}" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Medium" FontSize="14"/>
+                                                <Grid Grid.Column="1" Background="White" Padding="4">
+                                                    <TextBox Text="{Binding IPAddress}" TextAlignment="Center" MinHeight="28" Background="{StaticResource InputBackgroundBrush}" CornerRadius="4"/>
+                                                </Grid>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+
+                <!-- Excel Logo Path -->
+                <Grid Grid.Row="2"
+                          HorizontalAlignment="Stretch"
+                          Margin="0,12,0,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Loaded="OnLocalizedLoaded" Grid.Row="0" Text="Excel LOGO" FontSize="12" FontWeight="Bold" Foreground="#1e293b" Margin="0,0,0,4"/>
+                    <Border Grid.Row="1"
+                        Background="White"
+                        BorderBrush="#cbd5e1"
+                        BorderThickness="1"
+                        CornerRadius="4"
+                        Padding="10"
+                        Height="78">
+                        <Grid VerticalAlignment="Bottom">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBox Loaded="OnLocalizedLoaded" Grid.Column="0" PlaceholderText="파일 경로..." IsReadOnly="True" Background="#f8fafc" MinHeight="28" Margin="0,0,8,0"/>
+                            <Button Grid.Column="1" Background="#f1f5f9" BorderBrush="#94a3b8" BorderThickness="1" MinHeight="28" Padding="12,0">
+                                <FontIcon Glyph="&#xE8E5;" FontSize="14" Foreground="#334155"/>
+                            </Button>
+                        </Grid>
+                    </Border>
+                </Grid>
+
+                            </StackPanel></StackPanel>
+                        </Grid>
+                    </Grid>
+                </Border>
+                <Border Grid.Column="1" Background="White" BorderBrush="#d1d5db" BorderThickness="1" CornerRadius="8" Padding="10,7">
+                    <Grid RowSpacing="4">
+                        <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/></Grid.RowDefinitions>
+                        <Border BorderBrush="#e5e7eb" BorderThickness="0,0,0,1" Padding="0,0,0,5">
+                            <TextBlock Text="Operational settings" FontSize="16" FontWeight="SemiBold" Foreground="#111827"/>
+                        </Border>
+                        <Grid Grid.Row="1">
+                            <StackPanel Spacing="2">
+<Grid ColumnSpacing="8" Padding="0,0">
+        <Grid.ColumnDefinitions><ColumnDefinition Width="145"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+        <TextBlock Loaded="OnLocalizedLoaded" Grid.Column="0" Text="편차 (동조/허용)" VerticalAlignment="Center" FontSize="12.5" Foreground="#374151"/>
+        <Grid Grid.Column="1"><Grid ColumnSpacing="8"><Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+    <TextBlock Loaded="OnLocalizedLoaded" Text="동조" VerticalAlignment="Center"/><NumberBox x:Name="DashboardSyncDeviation" Grid.Column="1" Value="10" SpinButtonPlacementMode="Compact" HorizontalAlignment="Stretch" Height="29"/><TextBlock Grid.Column="2" Text="mm" VerticalAlignment="Center"/>
+    <TextBlock Loaded="OnLocalizedLoaded" Grid.Column="3" Text="허용" VerticalAlignment="Center"/><NumberBox x:Name="DashboardAllowedDeviation" Grid.Column="4" Value="20" SpinButtonPlacementMode="Compact" HorizontalAlignment="Stretch" Height="29"/><TextBlock Grid.Column="5" Text="mm" VerticalAlignment="Center"/>
+    </Grid></Grid>
+    </Grid>
+<Grid ColumnSpacing="8" Padding="0,0">
+        <Grid.ColumnDefinitions><ColumnDefinition Width="145"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+        <TextBlock Loaded="OnLocalizedLoaded" Grid.Column="0" Text="최대 초과 하중" VerticalAlignment="Center" FontSize="12.5" Foreground="#374151"/>
+        <Grid Grid.Column="1"><Grid ColumnSpacing="8"><Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+    <TextBlock Loaded="OnLocalizedLoaded" Text="자동" VerticalAlignment="Center"/><NumberBox x:Name="DashboardAutoOverload" Grid.Column="1" Value="120" SpinButtonPlacementMode="Compact" HorizontalAlignment="Stretch" Height="29"/><TextBlock Grid.Column="2" Text="%" VerticalAlignment="Center"/>
+    <TextBlock Loaded="OnLocalizedLoaded" Grid.Column="3" Text="수동" VerticalAlignment="Center"/><NumberBox x:Name="DashboardManualOverload" Grid.Column="4" Value="140" SpinButtonPlacementMode="Compact" HorizontalAlignment="Stretch" Height="29"/><TextBlock Grid.Column="5" Text="%" VerticalAlignment="Center"/>
+    </Grid></Grid>
+    </Grid>
+<Grid ColumnSpacing="8" Padding="0,0">
+        <Grid.ColumnDefinitions><ColumnDefinition Width="145"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+        <TextBlock Loaded="OnLocalizedLoaded" Grid.Column="0" Text="웨지작동 추가 가압시간" VerticalAlignment="Center" FontSize="12.5" Foreground="#374151"/>
+        <Grid Grid.Column="1" ColumnSpacing="6"><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><NumberBox x:Name="DashboardWedgeTime" Value="2" SpinButtonPlacementMode="Compact" HorizontalAlignment="Stretch" Height="29"/><TextBlock Grid.Column="1" Text="sec" VerticalAlignment="Center"/></Grid>
+    </Grid>
+<Grid ColumnSpacing="8" Padding="0,0">
+        <Grid.ColumnDefinitions><ColumnDefinition Width="145"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+        <TextBlock Loaded="OnLocalizedLoaded" Grid.Column="0" Text="초과하중 허용시간" VerticalAlignment="Center" FontSize="12.5" Foreground="#374151"/>
+        <Grid Grid.Column="1" ColumnSpacing="6"><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><NumberBox x:Name="DashboardOverloadTime" Value="2" SpinButtonPlacementMode="Compact" HorizontalAlignment="Stretch" Height="29"/><TextBlock Grid.Column="1" Text="sec" VerticalAlignment="Center"/></Grid>
+    </Grid>
+<Grid ColumnSpacing="8" Padding="0,0">
+        <Grid.ColumnDefinitions><ColumnDefinition Width="145"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+        <TextBlock Loaded="OnLocalizedLoaded" Grid.Column="0" Text="프리텐셔닝 범위" VerticalAlignment="Center" FontSize="12.5" Foreground="#374151"/>
+        <Grid Grid.Column="1" ColumnSpacing="6"><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><NumberBox x:Name="DashboardPretensionRange" Value="6" SpinButtonPlacementMode="Compact" HorizontalAlignment="Stretch" Height="29"/><TextBlock Grid.Column="1" Text="mm" VerticalAlignment="Center"/></Grid>
+    </Grid>
+<Grid ColumnSpacing="8" Padding="0,0">
+        <Grid.ColumnDefinitions><ColumnDefinition Width="145"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+        <TextBlock Loaded="OnLocalizedLoaded" Grid.Column="0" Text="상부웨지 물림 시점" VerticalAlignment="Center" FontSize="12.5" Foreground="#374151"/>
+        <Grid Grid.Column="1"><StackPanel Orientation="Horizontal" Spacing="12"><RadioButton Loaded="OnLocalizedLoaded" x:Name="DashboardWedgeOpen" Content="열고 내림" GroupName="WedgeMoment" IsChecked="True" Height="29"/><RadioButton Loaded="OnLocalizedLoaded" x:Name="DashboardWedgeClosed" Content="닫고 내림" GroupName="WedgeMoment" Height="29"/></StackPanel></Grid>
+    </Grid>
+<Grid ColumnSpacing="8" Padding="0,0">
+        <Grid.ColumnDefinitions><ColumnDefinition Width="145"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+        <TextBlock Loaded="OnLocalizedLoaded" Grid.Column="0" Text="스트랜드잭 동조" VerticalAlignment="Center" FontSize="12.5" Foreground="#374151"/>
+        <Grid Grid.Column="1"><StackPanel Orientation="Horizontal" Spacing="12"><RadioButton x:Name="DashboardSyncLift" Content="Lift" GroupName="SyncMode" IsChecked="True" Height="29"/><RadioButton x:Name="DashboardSyncTotal" Content="Total lift" GroupName="SyncMode" Height="29"/></StackPanel></Grid>
+    </Grid>
+<Grid ColumnSpacing="8" Padding="0,0">
+        <Grid.ColumnDefinitions><ColumnDefinition Width="145"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+        <TextBlock Loaded="OnLocalizedLoaded" Grid.Column="0" Text="누적거리 적산(수동)" VerticalAlignment="Center" FontSize="12.5" Foreground="#374151"/>
+        <Grid Grid.Column="1"><ToggleSwitch x:Name="DashboardManualAccumulation" IsOn="True" OnContent="" OffContent="" Height="29"/></Grid>
+    </Grid>
+<Grid ColumnSpacing="8" Padding="0,0">
+        <Grid.ColumnDefinitions><ColumnDefinition Width="145"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+        <TextBlock Loaded="OnLocalizedLoaded" Grid.Column="0" Text="감속 범위/속도" VerticalAlignment="Center" FontSize="12.5" Foreground="#374151"/>
+        <Grid Grid.Column="1"><Grid ColumnSpacing="8"><Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+    <TextBlock Loaded="OnLocalizedLoaded" Text="속도" VerticalAlignment="Center"/><NumberBox x:Name="DashboardDecelerationSpeed" Grid.Column="1" Value="30" SpinButtonPlacementMode="Compact" HorizontalAlignment="Stretch" Height="29"/><TextBlock Grid.Column="2" Text="Hz" VerticalAlignment="Center"/>
+    <TextBlock Loaded="OnLocalizedLoaded" Grid.Column="3" Text="범위" VerticalAlignment="Center"/><NumberBox x:Name="DashboardDecelerationRange" Grid.Column="4" Value="20" SpinButtonPlacementMode="Compact" HorizontalAlignment="Stretch" Height="29"/><TextBlock Grid.Column="5" Text="mm" VerticalAlignment="Center"/>
+    </Grid></Grid>
+    </Grid>
+<Grid ColumnSpacing="8" Padding="0,0">
+        <Grid.ColumnDefinitions><ColumnDefinition Width="145"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+        <TextBlock Loaded="OnLocalizedLoaded" Grid.Column="0" Text="범위 허용 변수" VerticalAlignment="Center" FontSize="12.5" Foreground="#374151"/>
+        <Grid Grid.Column="1" ColumnSpacing="6"><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><NumberBox x:Name="DashboardRangeTolerance" Value="2" SpinButtonPlacementMode="Compact" HorizontalAlignment="Stretch" Height="29"/><TextBlock Grid.Column="1" Text="mm" VerticalAlignment="Center"/></Grid>
+    </Grid>
+<Grid ColumnSpacing="8" Padding="0,0">
+        <Grid.ColumnDefinitions><ColumnDefinition Width="145"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+        <TextBlock Loaded="OnLocalizedLoaded" Grid.Column="0" Text="온도 센서 범위" VerticalAlignment="Center" FontSize="12.5" Foreground="#374151"/>
+        <Grid Grid.Column="1"><Grid ColumnSpacing="8"><Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+    <TextBlock Loaded="OnLocalizedLoaded" Text="최소" VerticalAlignment="Center"/><NumberBox x:Name="DashboardTemperatureMin" Grid.Column="1" Value="0" SpinButtonPlacementMode="Compact" HorizontalAlignment="Stretch" Height="29"/><TextBlock Grid.Column="2" Text="℃" VerticalAlignment="Center"/>
+    <TextBlock Loaded="OnLocalizedLoaded" Grid.Column="3" Text="최대" VerticalAlignment="Center"/><NumberBox x:Name="DashboardTemperatureMax" Grid.Column="4" Value="0" SpinButtonPlacementMode="Compact" HorizontalAlignment="Stretch" Height="29"/><TextBlock Grid.Column="5" Text="℃" VerticalAlignment="Center"/>
+    </Grid></Grid>
+    </Grid>
+<StackPanel Visibility="Collapsed">
+                                <!-- 수치 입력 (동조 설정) -->
+                                <Grid Background="White" BorderBrush="#e5e7eb" BorderThickness="0,0,0,1" Padding="8,5">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="180"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Loaded="OnLocalizedLoaded" Grid.Column="0" Text="상승 동조 편차" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="14"/>
+                                    <NumberBox x:Name="RiseDeviationInput" Style="{StaticResource SixDigitNumberBoxStyle}" Grid.Column="1" Value="2.0" SpinButtonPlacementMode="Compact" MinHeight="28" Background="{StaticResource InputBackgroundBrush}"/>
+                                </Grid>
+                                <Grid Background="White" BorderBrush="#e5e7eb" BorderThickness="0,0,0,1" Padding="8,5">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="180"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Loaded="OnLocalizedLoaded" Grid.Column="0" Text="상승 동조 범위" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="14"/>
+                                    <NumberBox x:Name="RiseRangeInput" Style="{StaticResource SixDigitNumberBoxStyle}" Grid.Column="1" Value="5.0" SpinButtonPlacementMode="Compact" MinHeight="28" Background="{StaticResource InputBackgroundBrush}"/>
+                                </Grid>
+                                <Grid Background="White" BorderBrush="#e5e7eb" BorderThickness="0,0,0,1" Padding="8,5">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="180"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Loaded="OnLocalizedLoaded" Grid.Column="0" Text="하강 동조 편차" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="14"/>
+                                    <NumberBox x:Name="FallDeviationInput" Style="{StaticResource SixDigitNumberBoxStyle}" Grid.Column="1" Value="1.0" SpinButtonPlacementMode="Compact" MinHeight="28" Background="{StaticResource InputBackgroundBrush}"/>
+                                </Grid>
+                                <Grid Background="White" BorderBrush="#e5e7eb" BorderThickness="0,0,0,1" Padding="8,5">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="180"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Loaded="OnLocalizedLoaded" Grid.Column="0" Text="하강 동조 범위" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="14"/>
+                                    <NumberBox x:Name="FallRangeInput" Style="{StaticResource SixDigitNumberBoxStyle}" Grid.Column="1" Value="3.0" SpinButtonPlacementMode="Compact" MinHeight="28" Background="{StaticResource InputBackgroundBrush}"/>
+                                </Grid>
+
+                                <!-- 중량 편차 비율 -->
+                                <Grid Background="White" BorderBrush="#e5e7eb" BorderThickness="0,0,0,1" Padding="8,5">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="180"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Loaded="OnLocalizedLoaded" Grid.Column="0" Text="중량 편차 비율(%)" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="14" TextWrapping="NoWrap"/>
+                                    <Grid Grid.Column="1" Background="White">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="180"/>
+                                        </Grid.ColumnDefinitions>
+                                        <CheckBox x:Name="LoadToleranceEnabledInput" Grid.Column="0" Margin="4,0"/>
+                                        <NumberBox x:Name="WeightDeviationInput" Style="{StaticResource SixDigitNumberBoxStyle}" Grid.Column="1" Width="120" Value="10.0" SpinButtonPlacementMode="Compact" MinHeight="28" Background="{StaticResource InputBackgroundBrush}"/>
+                                    </Grid>
+                                </Grid>
+
+                                <!-- 정지 압력 등 -->
+                                <Grid Background="White" BorderBrush="#e5e7eb" BorderThickness="0,0,0,1" Padding="8,5">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="180"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Loaded="OnLocalizedLoaded" Grid.Column="0" Text="최대 정지 압력" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="14"/>
+                                    <NumberBox x:Name="MaxStopPressureInput" Style="{StaticResource SixDigitNumberBoxStyle}" Grid.Column="1" Value="700" SpinButtonPlacementMode="Compact" MinHeight="28" Background="{StaticResource InputBackgroundBrush}"/>
+                                </Grid>
+                                <Grid Background="White" BorderBrush="#e5e7eb" BorderThickness="0,0,0,1" Padding="8,5">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="180"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Loaded="OnLocalizedLoaded" Grid.Column="0" Text="하강 정지 압력" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="14"/>
+                                    <NumberBox x:Name="FallStopPressureInput" Style="{StaticResource SixDigitNumberBoxStyle}" Grid.Column="1" Value="0" SpinButtonPlacementMode="Compact" MinHeight="28" Background="{StaticResource InputBackgroundBrush}"/>
+                                </Grid>
+                                <Grid Background="White" BorderBrush="#e5e7eb" BorderThickness="0,0,0,1" Padding="8,5">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="180"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Loaded="OnLocalizedLoaded" Grid.Column="0" Text="필터링" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="14"/>
+                                    <NumberBox x:Name="FilteringInput" Minimum="1" Maximum="1000" SmallChange="1" Style="{StaticResource SixDigitNumberBoxStyle}" Grid.Column="1" Value="5" SpinButtonPlacementMode="Compact" MinHeight="28" Background="{StaticResource InputBackgroundBrush}"/>
+                                </Grid>
+
+                                <!-- 화살표 색상 -->
+                                <Grid Background="#fef2f2" BorderBrush="#e2e8f0" BorderThickness="0,0,0,1" Padding="8,4">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="180"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Loaded="OnLocalizedLoaded" Grid.Column="0" Text="화살표 색상" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="14" Foreground="#7f1d1d" FontWeight="SemiBold"/>
+                                    <Button x:Name="ArrowColorButton" Grid.Column="1" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Padding="0" Background="White" BorderBrush="#cbd5e1" BorderThickness="1" MinHeight="28">
+                                        <Grid ColumnSpacing="8" Margin="8,4">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <FontIcon Glyph="&#xE790;" FontSize="16" VerticalAlignment="Center"/>
+                                            <Rectangle x:Name="ArrowColorPreview" Grid.Column="1" Fill="#dc2626" Height="16" MinWidth="28"/>
+                                        </Grid>
+                                    <Button.Flyout><Flyout><ColorPicker x:Name="ArrowColorPicker" IsAlphaEnabled="False" IsColorSliderVisible="True"/></Flyout></Button.Flyout></Button>
+                                </Grid>
+
+                                <!-- 수동 동조 -->
+                                <Grid Background="White" BorderBrush="#e5e7eb" BorderThickness="0,0,0,1" Padding="8,5">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="180"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Loaded="OnLocalizedLoaded" Grid.Column="0" Text="수동 동조" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="14"/>
+                                    <Grid Grid.Column="1" Background="White">
+                                        <CheckBox x:Name="ManualSyncInput" Margin="8,0"/>
+                                    </Grid>
+                                </Grid>
+
+                                <!-- ================= SOUND Settings ================= -->
+                                <Border Background="{StaticResource HeaderBackgroundBrush}" Padding="6">
+                                    <TextBlock Loaded="OnLocalizedLoaded" Text="SOUND Settings" Foreground="White" FontWeight="Bold" FontSize="14" HorizontalAlignment="Center"/>
+                                </Border>
+
+                                <Grid Background="White" BorderBrush="#e5e7eb" BorderThickness="0,0,0,1" Padding="8,5">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="180"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Loaded="OnLocalizedLoaded" Grid.Column="0" Text="경고음 사용" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Medium" FontSize="14"/>
+                                    <Grid Grid.Column="1" Background="White">
+                                        <CheckBox x:Name="WarningSoundEnabled" Margin="8,0"/>
+                                    </Grid>
+                                </Grid>
+
+                                <Grid Background="White" BorderBrush="#e5e7eb" BorderThickness="0,0,0,1" Padding="8,5">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="180"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Loaded="OnLocalizedLoaded" Grid.Column="0" Text="주의 소리" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Bold" Foreground="#b91c1c" FontSize="14"/>
+                                    <Grid Grid.Column="1">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBox x:Name="CautionSoundPath" Loaded="OnLocalizedLoaded" Grid.Column="0" PlaceholderText="파일 선택..." IsReadOnly="True" Background="{StaticResource InputBackgroundBrush}" MinHeight="28"/>
+                                        <Button x:Name="CautionSoundBrowse" Grid.Column="1" Width="28" MinHeight="28" Margin="4,0,0,0" Padding="0">
+                                            <FontIcon Glyph="&#xE8E5;" FontSize="14"/>
+                                        </Button>
+                                    </Grid>
+                                </Grid>
+
+                                <Grid Background="White" BorderBrush="#e5e7eb" BorderThickness="0,0,0,1" Padding="8,5">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="180"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Loaded="OnLocalizedLoaded" Grid.Column="0" Text="경고 소리" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Bold" Foreground="#b91c1c" FontSize="14"/>
+                                    <Grid Grid.Column="1">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBox x:Name="WarningSoundPath" Loaded="OnLocalizedLoaded" Grid.Column="0" PlaceholderText="파일 선택..." IsReadOnly="True" Background="{StaticResource InputBackgroundBrush}" MinHeight="28"/>
+                                        <Button x:Name="WarningSoundBrowse" Grid.Column="1" Width="28" MinHeight="28" Margin="4,0,0,0" Padding="0">
+                                            <FontIcon Glyph="&#xE8E5;" FontSize="14"/>
+                                        </Button>
+                                    </Grid>
+                                </Grid>
+
+
+                            </StackPanel></StackPanel>
+                        </Grid>
+                    </Grid>
+                </Border>
+            </Grid>
+            <Border Grid.Row="2" Background="White" BorderBrush="#d1d5db" BorderThickness="1" CornerRadius="8" Padding="10,7">
+                <Grid RowSpacing="5">
+                    <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/></Grid.RowDefinitions>
+                    <Grid Grid.Row="0">
+                        <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                        <TextBlock Text="Jack Configuration List" FontSize="16" FontWeight="SemiBold" Foreground="#111827" VerticalAlignment="Center"/>
+                        <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="6" VerticalAlignment="Center">
+                            <Button x:Name="BtnDashboardPrev" Content="◀" Width="28" Height="25" Padding="0"/>
+                            <TextBlock x:Name="DashboardPageText" Text="1 / 1" FontSize="12" Foreground="#374151" VerticalAlignment="Center"/>
+                            <Button x:Name="BtnDashboardNext" Content="▶" Width="28" Height="25" Padding="0"/>
+                        </StackPanel>
+                    <StackPanel Visibility="Collapsed" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Spacing="8">
+                        <TextBlock Loaded="OnLocalizedLoaded" Text="최대중량 사용 범위"
+                                   FontSize="15"
+                                   FontWeight="Medium"
+                                   VerticalAlignment="Center"/>
+                        <!-- NumberBox TextAlignment 속성 제거됨 -->
+                        <NumberBox Style="{StaticResource SixDigitNumberBoxStyle}" x:Name="MaxWeightRangeInput"
+                                   Value="60.0"
+                                   SpinButtonPlacementMode="Inline"
+                                   Width="160"
+                                   MinWidth="160"
+                                   MinHeight="30"
+                                   Background="White"
+                                   Foreground="#1d4ed8"
+                                   FontWeight="Bold"/>
+                        <TextBlock Text="%" FontSize="14" VerticalAlignment="Center"/>
+                    </StackPanel>
+                    </Grid>
+                    <Grid Grid.Row="1"><ListView x:Name="DashboardJackListView" SelectionMode="None" HorizontalContentAlignment="Stretch" Background="White" ScrollViewer.VerticalScrollBarVisibility="Disabled" Padding="0" BorderThickness="0">
+                        <ListView.ItemContainerStyle><Style TargetType="ListViewItem"><Setter Property="HorizontalContentAlignment" Value="Stretch"/><Setter Property="Padding" Value="0"/><Setter Property="Margin" Value="0"/><Setter Property="MinHeight" Value="30"/></Style></ListView.ItemContainerStyle>
+                        <ListView.Header>
+                            <Grid Background="#f3f4f6" Height="24" ColumnSpacing="4">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="0.55*"/><ColumnDefinition Width="1.32*"/><ColumnDefinition Width="2.08*"/><ColumnDefinition Width="0.8*"/><ColumnDefinition Width="1.05*"/><ColumnDefinition Width="1.05*"/><ColumnDefinition Width="1.05*"/><ColumnDefinition Width="1.15*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="HPU" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                <TextBlock Grid.Column="1" Text="IP Address" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                <TextBlock Loaded="OnLocalizedLoaded" Grid.Column="2" Text="잭 타입" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                <TextBlock Loaded="OnLocalizedLoaded" Grid.Column="3" Text="사용하중" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                <TextBlock Loaded="OnLocalizedLoaded" Grid.Column="4" Text="정지하중(%)" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                <TextBlock Loaded="OnLocalizedLoaded" Grid.Column="5" Text="잭 타이틀" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                <TextBlock Loaded="OnLocalizedLoaded" Grid.Column="6" Text="엔진컨트롤(%)" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                <TextBlock Loaded="OnLocalizedLoaded" Grid.Column="7" Text="온도 A/D 분해능" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            </Grid>
+                        </ListView.Header>
+                    </ListView><Border Visibility="Collapsed" BorderBrush="#cbd5e1" BorderThickness="1" Background="White">
+                    <ListView x:Name="JackTableListView"
+                              Background="White"
+                              SelectionMode="None"
+                              HorizontalContentAlignment="Stretch"
+                              Padding="0"
+                              BorderThickness="0">
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListViewItem">
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                <Setter Property="Padding" Value="0"/>
+                                <Setter Property="Margin" Value="0"/>
+                                <Setter Property="MinHeight" Value="44"/>
+                            </Style>
+                        </ListView.ItemContainerStyle>
+                        <ListView.HeaderTemplate>
+                            <DataTemplate>
+                                <Grid Background="#e2e8f0"
+                                      Height="44"
+                                      Padding="4"
+                                      BorderBrush="#94a3b8"
+                                      BorderThickness="0,0,0,2">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="1.75*"/>
+                                        <!-- No -->
+                                        <ColumnDefinition Width="0.9*"/>
+                                        <!-- X -->
+                                        <ColumnDefinition Width="0.9*"/>
+                                        <!-- Y -->
+                                        <ColumnDefinition Width="0.9*"/>
+                                        <!-- Jack -->
+                                        <ColumnDefinition Width="0.95*"/>
+                                        <!-- Target -->
+                                        <ColumnDefinition Width="1.0*"/>
+                                        <!-- 작업중 -->
+                                        <ColumnDefinition Width="1.05*"/>
+                                        <!-- 최대중량 -->
+                                        <ColumnDefinition Width="1.5*"/>
+                                        <!-- 잭선정 -->
+                                        <ColumnDefinition Width="0.9*"/>
+                                        <!-- Port -->
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Loaded="OnLocalizedLoaded" Grid.Column="0" Text="No" FontWeight="Medium" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                    <TextBlock Grid.Column="1" Text="X(mm)" FontWeight="Medium" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                    <TextBlock Grid.Column="2" Text="Y(mm)" FontWeight="Medium" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                    <TextBlock Loaded="OnLocalizedLoaded" Grid.Column="3" Text="Jack" FontWeight="Medium" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                    <TextBlock Loaded="OnLocalizedLoaded" Grid.Column="4" Text="Target" FontWeight="Medium" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                    <TextBlock Loaded="OnLocalizedLoaded" Grid.Column="5" Text="작업중" FontWeight="Medium" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                    <TextBlock Loaded="OnLocalizedLoaded" Grid.Column="6" Text="최대중량" FontWeight="Medium" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                    <TextBlock Loaded="OnLocalizedLoaded" Grid.Column="7" Text="잭선정" FontWeight="Medium" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                    <TextBlock Loaded="OnLocalizedLoaded" Grid.Column="8" Text="Port" FontWeight="Medium" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.HeaderTemplate>
+
+                    </ListView>
+                    </Border></Grid>
+                </Grid>
+            </Border>
+        </Grid>
+
+        <!-- =====================================================
+             3. Footer
+        ====================================================== -->
+        <Grid Grid.Row="1" Padding="8,4,8,6">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Bottom Action Buttons -->
+            <Grid Grid.Row="1" BorderBrush="#cbd5e1" BorderThickness="0,1,0,0" Padding="8,4">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="8">
+                <Button x:Name="BtnJackLayout"
+                        Grid.Column="0"
+                        HorizontalAlignment="Left"
+                        Padding="14,6"
+                        Click="OnJackLayoutClick">
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <FontIcon Glyph="&#xE748;"/>
+                        <TextBlock Loaded="OnLocalizedLoaded" Text="잭 배치"/>
+                    </StackPanel>
+                </Button>
+
+                <Button IsEnabled="False" Click="OnPressureAutoSettingsClick" Padding="14,6"><StackPanel Orientation="Horizontal" Spacing="8"><FontIcon Glyph="&#xE9D9;"/><TextBlock Loaded="OnLocalizedLoaded" Text="압력 자동 설정"/></StackPanel></Button>
+                <Button x:Name="BtnDistanceDeceleration" Padding="14,6" Click="OnDistanceDecelerationClick">
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <FontIcon Glyph="&#xE9D9;"/>
+                        <TextBlock Loaded="OnLocalizedLoaded" Text="거리 비례 감속"/>
+                    </StackPanel>
+                </Button>
+                </StackPanel>
+                <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8">
+                    <Button x:Name="BtnSave"
+                            Style="{StaticResource AccentButtonStyle}"
+                            Padding="14,6"
+                            Click="OnSaveClick">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <FontIcon Glyph="&#xE74E;"/>
+                            <TextBlock Loaded="OnLocalizedLoaded" Text="저장"/>
+                        </StackPanel>
+                    </Button>
+
+                    <Button x:Name="BtnCapture"
+                            Style="{StaticResource AccentButtonStyle}"
+                            Padding="14,6"
+                            Click="OnCaptureClick">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <FontIcon Glyph="&#xE722;"/>
+                            <TextBlock Loaded="OnLocalizedLoaded" Text="Capture"/>
+                        </StackPanel>
+                    </Button>
+
+                    <Button x:Name="BtnExit"
+                            Background="{StaticResource DangerButtonBrush}"
+                            Foreground="White"
+                            BorderBrush="{StaticResource DangerButtonBrush}"
+                            Padding="14,6"
+                            Click="OnExitClick">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <FontIcon Glyph="&#xE711;"/>
+                            <TextBlock Loaded="OnLocalizedLoaded" Text="나가기"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </Grid>
+    </Grid>
+    </Viewbox>
+    <Grid x:Name="ArrangementOverlay" Visibility="Collapsed" Background="#F8FAFC"/>
+    </Grid>
+</UserControl>
+
+
+
+

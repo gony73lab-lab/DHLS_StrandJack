@@ -1,0 +1,40 @@
+﻿// JackViewModels.idl — WinRT IDL for Jack observable models
+namespace DHLS_StrandJack.ViewModels
+{
+    // Observable Jack Setup Detail (for ListView binding)
+    [bindable]
+    [default_interface]
+    runtimeclass JackSetupDetailViewModel : Microsoft.UI.Xaml.Data.INotifyPropertyChanged
+    {
+        JackSetupDetailViewModel();
+        Int32 No;
+        Double X_mm;
+        Double Y_mm;
+        Int32 JackNumber;
+        Double Target;
+        Double WorkingWeight_ton;
+        Double MaxWeight_ton;
+        String JackSelection;
+        Int32 Port;
+        Windows.Foundation.Collections.IObservableVector<Object> JackSpecs { get; };
+    }
+
+    // Observable Jack Spec (for ComboBox binding)
+    [bindable]
+    [default_interface]
+    runtimeclass JackSpecViewModel : Microsoft.UI.Xaml.Data.INotifyPropertyChanged
+    {
+        JackSpecViewModel();
+        Double Capacity_ton;
+        Double PressureSensorScale_bar;
+        Double DisplacementSensorScale_mm;
+        String CylinderColor;
+        String PistonColor;
+        Double WorkingPressure_bar;
+        Double D1_Diameter_mm;
+        Double D2_Diameter_mm;
+        Double D3_Diameter_mm;
+        Double JackStroke_mm;
+        String DisplayName { get; };
+    }
+}

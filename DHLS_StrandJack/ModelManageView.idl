@@ -1,0 +1,13 @@
+namespace DHLS_StrandJack
+{
+    [default_interface]
+    runtimeclass ModelManageView : Microsoft.UI.Xaml.Controls.UserControl, Microsoft.UI.Xaml.Data.INotifyPropertyChanged
+    {
+        ModelManageView();
+        Windows.Foundation.Collections.IObservableVector<Object> ModelFiles { get; };
+        Int32 SelectedModelIndex;
+        Microsoft.UI.Xaml.Input.ICommand LoadModelCommand { get; };
+        Microsoft.UI.Xaml.Input.ICommand DeleteModelCommand { get; };
+        Microsoft.UI.Xaml.Input.ICommand AddNewModelCommand { get; };
+    }
+}

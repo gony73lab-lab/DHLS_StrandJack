@@ -1,0 +1,35 @@
+﻿#include <windows.h>
+#include "AppVersion.h"
+101 ICON "Assets\\DHLS_StrandJack.ico"
+
+1 VERSIONINFO
+ FILEVERSION DHLS_VERSION_NUMERIC
+ PRODUCTVERSION DHLS_VERSION_NUMERIC
+ FILEFLAGSMASK VS_FFI_FILEFLAGSMASK
+#ifdef _DEBUG
+ FILEFLAGS VS_FF_DEBUG
+#else
+ FILEFLAGS 0
+#endif
+ FILEOS VOS_NT_WINDOWS32
+ FILETYPE VFT_APP
+ FILESUBTYPE 0
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904B0"
+        BEGIN
+            VALUE "CompanyName", "DAEHA\0"
+            VALUE "FileDescription", "DHLS Strand Jack\0"
+            VALUE "FileVersion", DHLS_VERSION_STRING "\0"
+            VALUE "InternalName", "DHLS_StrandJack\0"
+            VALUE "OriginalFilename", "DHLS_StrandJack.exe\0"
+            VALUE "ProductName", "DHLS_StrandJack\0"
+            VALUE "ProductVersion", DHLS_VERSION_STRING "\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x0409, 1200
+    END
+END

@@ -1,0 +1,9 @@
+namespace DHLS_StrandJack
+{
+    [default_interface]
+    runtimeclass JackSettingsView : Microsoft.UI.Xaml.Controls.UserControl
+    {
+        JackSettingsView();
+        Int32 MyProperty;
+    }
+}

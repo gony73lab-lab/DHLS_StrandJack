@@ -1,0 +1,684 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <ItemGroup>
+    <Filter Include="01 앱 및 창">
+      <UniqueIdentifier>{34124531-E8C3-5DAE-ADFF-873F76544563}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02 화면">
+      <UniqueIdentifier>{0C856984-4E02-5F4D-9FF3-684464097DE7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02 화면\01 메인 메뉴">
+      <UniqueIdentifier>{153DCBCC-FC8E-51DC-8E67-8BD55E89F7E7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02 화면\02 운전 대시보드">
+      <UniqueIdentifier>{062896D3-68E9-560C-AB6B-48E4B9C62CAD}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02 화면\03 모델 관리">
+      <UniqueIdentifier>{4E488D51-B134-5A60-8AED-439DAC31BD61}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02 화면\04 새 모델">
+      <UniqueIdentifier>{F5F400AA-77B6-5FDE-8030-CCDB079CA2CE}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02 화면\05 제어 설정">
+      <UniqueIdentifier>{7B7DE567-9548-59A9-A662-B224D793DC08}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02 화면\06 잭 설정">
+      <UniqueIdentifier>{22896E15-FC49-52C7-9367-68E31234830E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02 화면\07 잭 배치">
+      <UniqueIdentifier>{152A1532-17ED-57D2-8E70-D64543D3DA6A}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03 데이터 및 바인딩">
+      <UniqueIdentifier>{E28F9F8E-472C-5F7F-8429-8761D90B7963}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04 설정 및 언어 서비스">
+      <UniqueIdentifier>{F3DBC048-4442-5C1D-84CC-40B7E6F70A86}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05 제어 로직">
+      <UniqueIdentifier>{166AB228-E5B6-5CAA-A20C-5C645032E016}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05 제어 로직\01 장비 서비스">
+      <UniqueIdentifier>{AF733488-A7B3-5717-BD2E-4F8B68950DC4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05 제어 로직\02 PLC 통신 및 주소">
+      <UniqueIdentifier>{0BC0B81F-6B35-5248-886C-EC73B705178D}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05 제어 로직\03 계산 및 진단">
+      <UniqueIdentifier>{1B7C18A8-CD98-5504-BCC7-40EC5ADF7F46}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05 제어 로직\04 개발자 시뮬레이션">
+      <UniqueIdentifier>{637016B1-A6C4-56DC-A581-49E37EDC8EAC}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06 공통 도구">
+      <UniqueIdentifier>{ADBF2B45-A29A-51A2-8A71-3A10288A3CFC}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="07 이미지 리소스">
+      <UniqueIdentifier>{895CADEB-2CBB-58DB-95FF-89BCFA53F67C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="07 이미지 리소스\앱 아이콘 및 시작 화면">
+      <UniqueIdentifier>{191C94D6-8C7F-5690-9A30-DCBE1D67207B}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="07 이미지 리소스\화면 이미지">
+      <UniqueIdentifier>{293F130C-70CE-5B6B-AA29-DA6094570168}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08 테스트">
+      <UniqueIdentifier>{1AFDF4B6-D42A-5A4B-A440-58AB2426223F}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08 테스트\서비스 및 통신">
+      <UniqueIdentifier>{9025DD61-E457-5D5E-9CC5-BD84D226E6ED}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08 테스트\알고리즘 및 예제">
+      <UniqueIdentifier>{8211060F-6888-57A6-8165-4DEBFF71A217}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="09 문서">
+      <UniqueIdentifier>{84E910FD-3F6A-5F45-997F-F18E061F0B21}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="09 문서\제어 로직">
+      <UniqueIdentifier>{0A348C8D-ED60-5B8F-BA6E-FF0C6C336690}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="10 프로젝트 구성">
+      <UniqueIdentifier>{DC722F92-1A9F-5B4B-8B63-DDF135499CC8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="10 프로젝트 구성\미리 컴파일 헤더">
+      <UniqueIdentifier>{DD623BA9-0CFD-596F-A394-BB590F176EC4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="99 자동 생성">
+      <UniqueIdentifier>{FAD95D62-B418-510C-84F1-30B0BA55E8AF}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Filter>01 앱 및 창</Filter>
+    </ApplicationDefinition>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="ConfigManager.cpp">
+      <Filter>04 설정 및 언어 서비스</Filter>
+    </ClCompile>
+    <ClCompile Include="ControlSettingsView.xaml.cpp">
+      <Filter>02 화면\05 제어 설정</Filter>
+    </ClCompile>
+    <ClCompile Include="JackSettingsView.xaml.cpp">
+      <Filter>02 화면\06 잭 설정</Filter>
+    </ClCompile>
+    <ClCompile Include="JackViewModels.cpp">
+      <Filter>03 데이터 및 바인딩</Filter>
+    </ClCompile>
+    <ClCompile Include="ControlLogic\EquipmentControlService.cpp">
+      <Filter>05 제어 로직\01 장비 서비스</Filter>
+    </ClCompile>
+    <ClCompile Include="MainDashboardView.xaml.cpp">
+      <Filter>02 화면\02 운전 대시보드</Filter>
+    </ClCompile>
+    <ClCompile Include="MainMenuView.xaml.cpp">
+      <Filter>02 화면\01 메인 메뉴</Filter>
+    </ClCompile>
+    <ClCompile Include="ModelManageView.xaml.cpp">
+      <Filter>02 화면\03 모델 관리</Filter>
+    </ClCompile>
+    <ClCompile Include="NewModelView.xaml.cpp">
+      <Filter>02 화면\04 새 모델</Filter>
+    </ClCompile>
+    <ClCompile Include="JackArrangementView.xaml.cpp">
+      <Filter>02 화면\07 잭 배치</Filter>
+    </ClCompile>
+    <ClCompile Include="pch.cpp">
+      <Filter>10 프로젝트 구성\미리 컴파일 헤더</Filter>
+    </ClCompile>
+    <ClCompile Include="App.xaml.cpp">
+      <Filter>01 앱 및 창</Filter>
+    </ClCompile>
+    <ClCompile Include="MainWindow.xaml.cpp">
+      <Filter>01 앱 및 창</Filter>
+    </ClCompile>
+    <ClCompile Include="$(GeneratedFilesDir)module.g.cpp">
+      <Filter>99 자동 생성</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ConfigManager.h">
+      <Filter>04 설정 및 언어 서비스</Filter>
+    </ClInclude>
+    <ClInclude Include="AuditLog.h">
+      <Filter>04 설정 및 언어 서비스</Filter>
+    </ClInclude>
+    <ClInclude Include="SettingsAudit.h">
+      <Filter>04 설정 및 언어 서비스</Filter>
+    </ClInclude>
+    <ClInclude Include="JackTypeLabel.h">
+      <Filter>06 공통 도구</Filter>
+    </ClInclude>
+    <ClInclude Include="Localization.h">
+      <Filter>04 설정 및 언어 서비스</Filter>
+    </ClInclude>
+    <ClInclude Include="RoundedWindow.h">
+      <Filter>06 공통 도구</Filter>
+    </ClInclude>
+    <ClInclude Include="ControlSettingsView.xaml.h">
+      <Filter>02 화면\05 제어 설정</Filter>
+    </ClInclude>
+    <ClInclude Include="JackSettingsView.xaml.h">
+      <Filter>02 화면\06 잭 설정</Filter>
+    </ClInclude>
+    <ClInclude Include="ApplicationVersion.h">
+      <Filter>04 설정 및 언어 서비스</Filter>
+    </ClInclude>
+    <ClInclude Include="AppVersion.h">
+      <Filter>04 설정 및 언어 서비스</Filter>
+    </ClInclude>
+    <ClInclude Include="PlcDefaults.h">
+      <Filter>04 설정 및 언어 서비스</Filter>
+    </ClInclude>
+    <ClInclude Include="JackViewModels.h">
+      <Filter>03 데이터 및 바인딩</Filter>
+    </ClInclude>
+    <ClInclude Include="ControlLogic\EquipmentSession.h">
+      <Filter>05 제어 로직\01 장비 서비스</Filter>
+    </ClInclude>
+    <ClInclude Include="ControlLogic\EquipmentControlService.h">
+      <Filter>05 제어 로직\01 장비 서비스</Filter>
+    </ClInclude>
+    <ClInclude Include="ControlLogic\XgtEmergencyTransport.h">
+      <Filter>05 제어 로직\02 PLC 통신 및 주소</Filter>
+    </ClInclude>
+    <ClInclude Include="ControlLogic\Evo\COGCalculator.h">
+      <Filter>05 제어 로직\03 계산 및 진단</Filter>
+    </ClInclude>
+    <ClInclude Include="ControlLogic\Evo\COGDiagnosticPipeline.h">
+      <Filter>05 제어 로직\03 계산 및 진단</Filter>
+    </ClInclude>
+    <ClInclude Include="ControlLogic\Evo\COGIntegration.h">
+      <Filter>05 제어 로직\03 계산 및 진단</Filter>
+    </ClInclude>
+    <ClInclude Include="ControlLogic\Evo\DRegionDiagnostics.h">
+      <Filter>05 제어 로직\02 PLC 통신 및 주소</Filter>
+    </ClInclude>
+    <ClInclude Include="ControlLogic\Evo\LoweringControl.h">
+      <Filter>05 제어 로직\03 계산 및 진단</Filter>
+    </ClInclude>
+    <ClInclude Include="ControlLogic\Evo\PressureBalancedLiftUp.h">
+      <Filter>05 제어 로직\03 계산 및 진단</Filter>
+    </ClInclude>
+    <ClInclude Include="ControlLogic\Evo\PressureLiftUp.h">
+      <Filter>05 제어 로직\03 계산 및 진단</Filter>
+    </ClInclude>
+    <ClInclude Include="ControlLogic\Evo\SynchronizationAlgorithm.h">
+      <Filter>05 제어 로직\03 계산 및 진단</Filter>
+    </ClInclude>
+    <ClInclude Include="ControlLogic\Evo\XgbXgtTcpReadOnly.h">
+      <Filter>05 제어 로직\02 PLC 통신 및 주소</Filter>
+    </ClInclude>
+    <ClInclude Include="ControlLogic\Evo\XgbXgtTcpReadWrite.h">
+      <Filter>05 제어 로직\02 PLC 통신 및 주소</Filter>
+    </ClInclude>
+    <ClInclude Include="MainDashboardView.xaml.h">
+      <Filter>02 화면\02 운전 대시보드</Filter>
+    </ClInclude>
+    <ClInclude Include="MainMenuView.xaml.h">
+      <Filter>02 화면\01 메인 메뉴</Filter>
+    </ClInclude>
+    <ClInclude Include="ModelManageView.xaml.h">
+      <Filter>02 화면\03 모델 관리</Filter>
+    </ClInclude>
+    <ClInclude Include="NewModelView.xaml.h">
+      <Filter>02 화면\04 새 모델</Filter>
+    </ClInclude>
+    <ClInclude Include="JackArrangementView.xaml.h">
+      <Filter>02 화면\07 잭 배치</Filter>
+    </ClInclude>
+    <ClInclude Include="pch.h">
+      <Filter>10 프로젝트 구성\미리 컴파일 헤더</Filter>
+    </ClInclude>
+    <ClInclude Include="App.xaml.h">
+      <Filter>01 앱 및 창</Filter>
+    </ClInclude>
+    <ClInclude Include="MainWindow.xaml.h">
+      <Filter>01 앱 및 창</Filter>
+    </ClInclude>
+    <ClInclude Include="RelayCommand.h">
+      <Filter>06 공통 도구</Filter>
+    </ClInclude>
+    <ClInclude Include="SystemConfigModels.h">
+      <Filter>03 데이터 및 바인딩</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewModelBase.h">
+      <Filter>06 공통 도구</Filter>
+    </ClInclude>
+    <ClInclude Include="ControlLogic\DeveloperSimulation.h">
+      <Filter>05 제어 로직\04 개발자 시뮬레이션</Filter>
+    </ClInclude>
+    <ClInclude Include="JackSetupDetailObservable.h">
+      <Filter>03 데이터 및 바인딩</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Assets\DHLS_Logo_White_Transparent.png">
+      <Filter>07 이미지 리소스\화면 이미지</Filter>
+    </Image>
+    <Image Include="Assets\JackSettingsDiagram.png">
+      <Filter>07 이미지 리소스\화면 이미지</Filter>
+    </Image>
+    <Image Include="Assets\EmergencyStop.png">
+      <Filter>07 이미지 리소스\화면 이미지</Filter>
+    </Image>
+    <Image Include="Assets\LockScreenLogo.scale-200.png">
+      <Filter>07 이미지 리소스\앱 아이콘 및 시작 화면</Filter>
+    </Image>
+    <Image Include="Assets\SplashScreen.scale-200.png">
+      <Filter>07 이미지 리소스\앱 아이콘 및 시작 화면</Filter>
+    </Image>
+    <Image Include="Assets\Square150x150Logo.scale-200.png">
+      <Filter>07 이미지 리소스\앱 아이콘 및 시작 화면</Filter>
+    </Image>
+    <Image Include="Assets\Square44x44Logo.scale-200.png">
+      <Filter>07 이미지 리소스\앱 아이콘 및 시작 화면</Filter>
+    </Image>
+    <Image Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png">
+      <Filter>07 이미지 리소스\앱 아이콘 및 시작 화면</Filter>
+    </Image>
+    <Image Include="Assets\StoreLogo.png">
+      <Filter>07 이미지 리소스\앱 아이콘 및 시작 화면</Filter>
+    </Image>
+    <Image Include="Assets\Wide310x150Logo.scale-200.png">
+      <Filter>07 이미지 리소스\앱 아이콘 및 시작 화면</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Manifest Include="app.manifest">
+      <Filter>10 프로젝트 구성</Filter>
+    </Manifest>
+  </ItemGroup>
+  <ItemGroup>
+    <Midl Include="ControlSettingsView.idl">
+      <Filter>02 화면\05 제어 설정</Filter>
+    </Midl>
+    <Midl Include="JackSettingsView.idl">
+      <Filter>02 화면\06 잭 설정</Filter>
+    </Midl>
+    <Midl Include="JackViewModels.idl">
+      <Filter>03 데이터 및 바인딩</Filter>
+    </Midl>
+    <Midl Include="MainDashboardView.idl">
+      <Filter>02 화면\02 운전 대시보드</Filter>
+    </Midl>
+    <Midl Include="MainMenuView.idl">
+      <Filter>02 화면\01 메인 메뉴</Filter>
+    </Midl>
+    <Midl Include="MainWindow.idl">
+      <Filter>01 앱 및 창</Filter>
+    </Midl>
+    <Midl Include="ModelManageView.idl">
+      <Filter>02 화면\03 모델 관리</Filter>
+    </Midl>
+    <Midl Include="NewModelView.idl">
+      <Filter>02 화면\04 새 모델</Filter>
+    </Midl>
+    <Midl Include="JackArrangementView.idl">
+      <Filter>02 화면\07 잭 배치</Filter>
+    </Midl>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include=".editorconfig">
+      <Filter>10 프로젝트 구성</Filter>
+    </None>
+    <None Include="packages.config">
+      <Filter>10 프로젝트 구성</Filter>
+    </None>
+    <None Include="ControlLogic\Evo\COG_FEATURE_README.md">
+      <Filter>09 문서\제어 로직</Filter>
+    </None>
+    <None Include="ControlLogic\Evo\example_cog.cpp">
+      <Filter>08 테스트\알고리즘 및 예제</Filter>
+    </None>
+    <None Include="ControlLogic\Evo\PRESSURE_BALANCE_README.md">
+      <Filter>09 문서\제어 로직</Filter>
+    </None>
+    <None Include="ControlLogic\Evo\test.cpp">
+      <Filter>08 테스트\알고리즘 및 예제</Filter>
+    </None>
+    <None Include="ControlLogic\Evo\test_cog.cpp">
+      <Filter>08 테스트\알고리즘 및 예제</Filter>
+    </None>
+    <None Include="ControlLogic\Evo\test_cog_pipeline.cpp">
+      <Filter>08 테스트\알고리즘 및 예제</Filter>
+    </None>
+    <None Include="ControlLogic\Evo\test_lowering.cpp">
+      <Filter>08 테스트\알고리즘 및 예제</Filter>
+    </None>
+    <None Include="ControlLogic\Evo\test_pressure_balanced.cpp">
+      <Filter>08 테스트\알고리즘 및 예제</Filter>
+    </None>
+    <None Include="ControlLogic\Evo\test_pressure_lift.cpp">
+      <Filter>08 테스트\알고리즘 및 예제</Filter>
+    </None>
+    <None Include="ControlLogic\Evo\test_write.cpp">
+      <Filter>08 테스트\알고리즘 및 예제</Filter>
+    </None>
+    <None Include="ControlLogic\Evo\test_xgt.cpp">
+      <Filter>08 테스트\알고리즘 및 예제</Filter>
+    </None>
+    <None Include="ControlLogic\INTEGRATION.md">
+      <Filter>09 문서\제어 로직</Filter>
+    </None>
+    <None Include="ControlLogic\tests\RunOfflineTests.cmd">
+      <Filter>08 테스트\서비스 및 통신</Filter>
+    </None>
+    <None Include="ControlLogic\tests\test_emergency_transport.cpp">
+      <Filter>08 테스트\서비스 및 통신</Filter>
+    </None>
+    <None Include="ControlLogic\tests\test_equipment_service.cpp">
+      <Filter>08 테스트\서비스 및 통신</Filter>
+    </None>
+    <None Include="ControlLogic\tests\test_simulation.cpp">
+      <Filter>08 테스트\서비스 및 통신</Filter>
+    </None>
+    <None Include="ControlLogic\tests\test_xgt_deadline.cpp">
+      <Filter>08 테스트\서비스 및 통신</Filter>
+    </None>
+    <None Include="$(_WindowsMLLocalNativePath)\onnxruntime.dll" />
+    <None Include="$(_WindowsMLLocalNativePath)\DirectML.dll" />
+    <None Include="$(_WindowsMLLocalNativePath)\Microsoft.Windows.AI.MachineLearning.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="ControlSettingsView.xaml">
+      <Filter>02 화면\05 제어 설정</Filter>
+    </Page>
+    <Page Include="JackSettingsView.xaml">
+      <Filter>02 화면\06 잭 설정</Filter>
+    </Page>
+    <Page Include="MainDashboardView.xaml">
+      <Filter>02 화면\02 운전 대시보드</Filter>
+    </Page>
+    <Page Include="MainMenuView.xaml">
+      <Filter>02 화면\01 메인 메뉴</Filter>
+    </Page>
+    <Page Include="MainWindow.xaml">
+      <Filter>01 앱 및 창</Filter>
+    </Page>
+    <Page Include="ModelManageView.xaml">
+      <Filter>02 화면\03 모델 관리</Filter>
+    </Page>
+    <Page Include="NewModelView.xaml">
+      <Filter>02 화면\04 새 모델</Filter>
+    </Page>
+    <Page Include="JackArrangementView.xaml">
+      <Filter>02 화면\07 잭 배치</Filter>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="readme.txt">
+      <Filter>09 문서</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="05 제어 로직\05 시퀀스 엔진">
+      <UniqueIdentifier>{36DFD580-E41F-5BD0-9533-FDB8A41A8C4D}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="09 문서\AI 작업 패키지">
+      <UniqueIdentifier>{E42BD9ED-E72C-5BEF-AE5B-48DF35F756D0}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ControlLogic\Sequence\CMakeLists.txt">
+      <Filter>05 제어 로직\05 시퀀스 엔진</Filter>
+    </None>
+    <ClInclude Include="ControlLogic\Sequence\MockPlant.h">
+      <Filter>05 제어 로직\05 시퀀스 엔진</Filter>
+    </ClInclude>
+    <ClInclude Include="ControlLogic\Sequence\PlcReadOnlyPlant.h">
+      <Filter>05 제어 로직\05 시퀀스 엔진</Filter>
+    </ClInclude>
+    <ClInclude Include="ControlLogic\Sequence\SequenceEngine.h">
+      <Filter>05 제어 로직\05 시퀀스 엔진</Filter>
+    </ClInclude>
+    <ClInclude Include="ControlLogic\Sequence\SimulationSequence.h">
+      <Filter>05 제어 로직\05 시퀀스 엔진</Filter>
+    </ClInclude>
+    <None Include="ControlLogic\tests\test_sequence_engine.cpp">
+      <Filter>08 테스트\서비스 및 통신</Filter>
+    </None>
+    <None Include="DHLS_AI_Package\AI_WORK_ORDER.md">
+      <Filter>09 문서\AI 작업 패키지</Filter>
+    </None>
+    <None Include="DHLS_AI_Package\CMakeLists.txt">
+      <Filter>09 문서\AI 작업 패키지</Filter>
+    </None>
+    <None Include="DHLS_AI_Package\DHLS SLS Manual_Rev2.docx">
+      <Filter>09 문서\AI 작업 패키지</Filter>
+    </None>
+    <None Include="DHLS_AI_Package\main.cpp">
+      <Filter>09 문서\AI 작업 패키지</Filter>
+    </None>
+    <None Include="DHLS_AI_Package\MockPlant.h">
+      <Filter>09 문서\AI 작업 패키지</Filter>
+    </None>
+    <None Include="DHLS_AI_Package\README.md">
+      <Filter>09 문서\AI 작업 패키지</Filter>
+    </None>
+    <None Include="DHLS_AI_Package\SequenceEngine.h">
+      <Filter>09 문서\AI 작업 패키지</Filter>
+    </None>
+    <None Include="DHLS_AI_Package\smoke_test.cpp">
+      <Filter>09 문서\AI 작업 패키지</Filter>
+    </None>
+    <None Include="DHLS_AI_Package\WinUI_Integration.txt">
+      <Filter>09 문서\AI 작업 패키지</Filter>
+    </None>
+    <None Include="DHLS_AI_Package\동조리프팅시스템 시퀀스_20261002.xlsx">
+      <Filter>09 문서\AI 작업 패키지</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ControlLogic\Sequence\INTEGRATION.md">
+      <Filter>09 문서\제어 로직</Filter>
+    </None>
+    <None Include="ControlLogic\Sequence\OPEN_ITEMS.md">
+      <Filter>09 문서\제어 로직</Filter>
+    </None>
+    <None Include="ControlLogic\Sequence\PLC_CONNECTION_MAP.md">
+      <Filter>09 문서\제어 로직</Filter>
+    </None>
+    <None Include="ControlLogic\Sequence\VALIDATION.md">
+      <Filter>09 문서\제어 로직</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="AppIcon.rc">
+      <Filter>10 프로젝트 구성</Filter>
+    </ResourceCompile>
+    <None Include="Assets\DHLS_StrandJack.ico">
+      <Filter>07 이미지 리소스\앱 아이콘 및 시작 화면</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="PlcMapMonitor.h">
+      <Filter>02 화면\02 운전 대시보드</Filter>
+    </ClInclude>
+    <ClInclude Include="ControlLogic\PlcMapCatalog.h">
+      <Filter>05 제어 로직\02 PLC 통신 및 주소</Filter>
+    </ClInclude>
+    <ClInclude Include="ControlLogic\PlcMapTracker.h">
+      <Filter>05 제어 로직\02 PLC 통신 및 주소</Filter>
+    </ClInclude>
+    <None Include="ControlLogic\tests\test_d_word_bits.cpp">
+      <Filter>08 테스트\서비스 및 통신</Filter>
+    </None>
+    <None Include="ControlLogic\tests\test_live_d51f_once.cpp">
+      <Filter>08 테스트\서비스 및 통신</Filter>
+    </None>
+    <None Include="ControlLogic\tests\test_live_pc_plc_writes.cpp">
+      <Filter>08 테스트\서비스 및 통신</Filter>
+    </None>
+    <None Include="ControlLogic\tests\test_live_plc_map_pm.cpp">
+      <Filter>08 테스트\서비스 및 통신</Filter>
+    </None>
+    <None Include="ControlLogic\tests\test_live_plc_readonly.cpp">
+      <Filter>08 테스트\서비스 및 통신</Filter>
+    </None>
+    <None Include="ControlLogic\tests\test_live_plc_recovery.cpp">
+      <Filter>08 테스트\서비스 및 통신</Filter>
+    </None>
+    <None Include="ControlLogic\tests\test_pc_plc_write_baseline.cpp">
+      <Filter>08 테스트\서비스 및 통신</Filter>
+    </None>
+    <None Include="ControlLogic\tests\test_pc_plc_write_offline.cpp">
+      <Filter>08 테스트\서비스 및 통신</Filter>
+    </None>
+    <None Include="ControlLogic\tests\test_plc_map.cpp">
+      <Filter>08 테스트\서비스 및 통신</Filter>
+    </None>
+    <None Include="..\docs\PLC_MAP_MONITOR.md">
+      <Filter>09 문서\제어 로직</Filter>
+    </None>
+    <None Include="..\docs\PLC_READONLY_TEST_20261030.md">
+      <Filter>09 문서\제어 로직</Filter>
+    </None>
+    <None Include="..\docs\PLC_IP_INTEGRATION_20261030.md">
+      <Filter>09 문서\제어 로직</Filter>
+    </None>
+    <None Include="..\docs\D_WORD_BIT_AUDIT_20261031.md">
+      <Filter>09 문서\제어 로직</Filter>
+    </None>
+    <None Include="..\docs\D051F_HANDSHAKE_TEST_20261031.md">
+      <Filter>09 문서\제어 로직</Filter>
+    </None>
+    <None Include="..\docs\PC_PLC_WRITE_VALIDATION_20261031.md">
+      <Filter>09 문서\제어 로직</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ControlLogic\tests\test_control_commands.cpp">
+      <Filter>08 테스트\서비스 및 통신</Filter>
+    </None>
+    <None Include="..\docs\PLC_OPERATOR_COMMANDS.md">
+      <Filter>09 문서\제어 로직</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="UnitConversion.h">
+      <Filter>06 공통 도구</Filter>
+    </ClInclude>
+    <ClInclude Include="DisplayUnits.h">
+      <Filter>06 공통 도구</Filter>
+    </ClInclude>
+    <None Include="ControlLogic\tests\test_units.cpp">
+      <Filter>08 테스트\서비스 및 통신</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\docs\UNIT_DISPLAY.md">
+      <Filter>09 문서\제어 로직</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\docs\PT_PRESSURE_LOAD.md">
+      <Filter>09 문서\제어 로직</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ControlLogic\tests\test_fault_interlock.cpp">
+      <Filter>08 테스트\서비스 및 통신</Filter>
+    </None>
+    <None Include="..\docs\PLC_FAULT_INTERLOCK.md">
+      <Filter>09 문서\제어 로직</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="JackScaleConsistency.h">
+      <Filter>06 공통 도구</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ControlLogic\tests\test_scale_consistency.cpp">
+      <Filter>08 테스트\서비스 및 통신</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\docs\SCALE_CONSISTENCY.md">
+      <Filter>09 문서\제어 로직</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ControlLogic\PlcDirectionFeedback.h">
+      <Filter>05 제어 로직\02 PLC 통신 및 주소</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ControlLogic\tests\test_pc_write_gate.cpp">
+      <Filter>08 테스트\서비스 및 통신</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ControlLogic\tests\test_manual_ports.cpp">
+      <Filter>08 테스트\서비스 및 통신</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ControlLogic\ControlSettingsRuntime.h">
+      <Filter>05 제어 로직\01 장비 서비스</Filter>
+    </ClInclude>
+    <ClInclude Include="WarningSound.h">
+      <Filter>04 설정 및 언어 서비스</Filter>
+    </ClInclude>
+    <None Include="ControlLogic\tests\test_equipment_session.cpp">
+      <Filter>08 테스트\서비스 및 통신</Filter>
+    </None>
+    <None Include="ControlLogic\tests\test_settings_runtime.cpp">
+      <Filter>08 테스트\서비스 및 통신</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\docs\CONTROL_SETTINGS_RUNTIME.md">
+      <Filter>09 문서\제어 로직</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="ControlSettingsView.Deceleration.cpp">
+      <Filter>02 화면\05 제어 설정</Filter>
+    </ClCompile>
+    <ClInclude Include="ControlLogic\DistanceDeceleration.h">
+      <Filter>05 제어 로직\01 장비 서비스</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ControlLogic\tests\test_distance_deceleration.cpp">
+      <Filter>08 테스트\서비스 및 통신</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\docs\DISTANCE_DECELERATION_UI.md">
+      <Filter>09 문서\제어 로직</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ControlLogic\AutomaticDistanceSequence.h">
+      <Filter>05 제어 로직\01 장비 서비스</Filter>
+    </ClInclude>
+    <None Include="ControlLogic\tests\test_automatic_plc.cpp">
+      <Filter>08 테스트\서비스 및 통신</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ControlLogic\PressureAutoControl.h">
+      <Filter>05 제어 로직\01 장비 서비스</Filter>
+    </ClInclude>
+    <ClInclude Include="ControlLogic\PressureAutoAdapter.h">
+      <Filter>05 제어 로직\01 장비 서비스</Filter>
+    </ClInclude>
+    <None Include="ControlLogic\tests\test_pressure_auto.cpp">
+      <Filter>08 테스트\서비스 및 통신</Filter>
+    </None>
+    <None Include="ControlLogic\tests\test_pressure_auto_service.cpp">
+      <Filter>08 테스트\서비스 및 통신</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\docs\PRESSURE_AUTO_IMPLEMENTATION.md">
+      <Filter>09 문서\제어 로직</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Natvis Include="$(MSBuildThisFileDirectory)..\..\natvis\wil.natvis" />
+    <Natvis Include="$(MSBuildThisFileDirectory)..\..\natvis\wil.natstepfilter" />
+  </ItemGroup>
+</Project>

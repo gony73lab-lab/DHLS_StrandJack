@@ -1,0 +1,41 @@
+﻿namespace DHLS_StrandJack
+{
+    [default_interface]
+    runtimeclass MainDashboardView : Microsoft.UI.Xaml.Controls.UserControl
+    {
+        MainDashboardView();
+        Int32 MyProperty;
+        String ModelTitle{ get; };
+
+        // Mirrors updatePortLayout(setCount, columns) in the HTML.
+        void UpdatePortLayout(Int32 setCount, Int32 columns);
+
+        // JackArrangementView template mapping (verified against the HTML):
+        //   T1 = 2 SET x (1 row, 8 ports) -> 2 rows x 8 cylinders
+        //   T2 = 3 SET x (1 row, 8 ports) -> 3 rows x 8 cylinders
+        //   T3 = 4 SET x (1 row, 8 ports) -> 4 rows x 8 cylinders
+        //   T4 = 2 x 2 SETs, each with 2 rows x 4 ports.
+        // Apply ONLY the confirmed arrangement, never the preview selection.
+        void ApplyJackArrangementTemplate(Int32 templateId);
+        void ApplyConfirmedArrangementJson(String arrangementJson);
+        Int32 ActiveArrangementTemplate{ get; };
+
+        // UI data update APIs. These do not communicate with any PLC.
+        void SetPortCapacity(Int32 setNumber, Int32 portNumber, Int32 capacityTon);
+        void SetPortMetrics(Int32 setNumber, Int32 portNumber, Double pressureBar,
+                            Double loadTon, Double relativeMm, Double absoluteMm);
+        Double MoveDisplacement{ get; };
+        void SetMovementProgress(Double percent);
+        void SetTotalWeight(Double ton);
+        void SetSetTotalWeight(Int32 setNumber, Double ton);
+        void SetPlcConnected(Int32 setNumber, Boolean connected);
+        void SetErrorActive(Int32 setNumber, Boolean active);
+        void SetHpuRunning(Int32 plcIndex, Boolean running);
+        void SetOperationRunning(Boolean running);
+        Boolean IsPortSelected(Int32 setNumber, Int32 portNumber);
+
+        // User action notifications; host application owns the safety checks,
+        // permissions, PLC interface, and physical equipment operations.
+        event Windows.Foundation.TypedEventHandler<MainDashboardView, String> ActionRequested;
+    }
+}

@@ -1,0 +1,12 @@
+namespace DHLS_StrandJack
+{
+    [default_interface]
+    runtimeclass ControlSettingsView : Microsoft.UI.Xaml.Controls.UserControl
+    {
+        ControlSettingsView();
+        Int32 MyProperty;
+
+        // Host Window reference for standalone window mode
+        void HostWindow(Microsoft.UI.Xaml.Window window);
+    }
+}

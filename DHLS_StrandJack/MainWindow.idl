@@ -1,0 +1,12 @@
+namespace DHLS_StrandJack
+{
+    [default_interface]
+    runtimeclass MainWindow : Microsoft.UI.Xaml.Window
+    {
+        MainWindow();
+
+    // x:Bind를 위한 UI Command 메서드
+    void OnNewModelClicked();
+    void OnExistingModelClicked();
+  }
+}
